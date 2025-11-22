@@ -28,8 +28,8 @@
     html, body {
       margin: 0;
       padding: 0;
-      background: #000;
-      color: #fff;
+      background: #0A0A0A;
+      color: #DDE1E5;
     }
 
 body {
@@ -107,10 +107,12 @@ body {
       max-width: 760px;
       margin-top: 1px;   /* 위에서 얼마나 내려올지 */
       margin-left: 1px;  /* 샤프트 선에서 얼마나 떨어질지 – 이 값 줄이면 더 붙음 */
-      border: 1px solid rgba(255,255,255,0.3);
-      padding: 20px 20px 18px;
-      background: #000;
-      color: #fff;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 16px 18px;
+      background: rgba(0,0,0,0.6); 
+      color: #E6E6E6;
+      backdrop-filter: blur(4px);
+      border-color: rgba(255,255,255,0.2);
       position: relative;
       z-index: 1;         /* 중앙 미디어 위에 떠 있게 */
     }
@@ -492,5 +494,6 @@ body {
   </script>
 </body>
 </html>
+
 
 
