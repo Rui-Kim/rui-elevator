@@ -5,22 +5,19 @@
   <title>Kim Rui | Elevator Archive</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- 폰트 -->
-<!-- 한글폰트: 나눔고딕 -->
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@300;400;700&display=swap" rel="stylesheet">
-
-<style>
-  body {
-    font-family: "Nanum Gothic", sans-serif;
-  }
-
-  .eng {
-    font-family: "Menlo", monospace;
-  }
-</style>
-
+  <!-- 폰트: 한글 나눔고딕 -->
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@300;400;700&display=swap" rel="stylesheet">
 
   <style>
+    /* 기본 폰트 설정 */
+    body {
+      font-family: "Nanum Gothic", sans-serif;
+    }
+
+    .eng {
+      font-family: "Menlo", monospace;
+    }
+
     * {
       box-sizing: border-box;
     }
@@ -32,10 +29,19 @@
       color: #DDE1E5;
     }
 
-body {
-  position: relative;
-}
+    body {
+      position: relative;
+    }
 
+    /* 링크 색상 */
+    a {
+      color: #C7D2FF;       /* 살짝 푸른 회색 */
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
 
     /* FLOOR 글자 숨기기 */
     .elevator-label {
@@ -63,7 +69,7 @@ body {
       border: none;
       padding: 2px 0;
       font-size: 12px;
-      color: #fff;
+      color: #FFFFFF;
       cursor: pointer;
       opacity: 0.6;
       text-align: left;
@@ -82,7 +88,7 @@ body {
     /* 콘텐츠 영역: 왼쪽 엘리베이터만큼 여백 + 샤프트 라인 */
     main {
       margin-left: 80px;
-      border-left: 1px solid rgba(255,255,255,0.2); /* ← 빨간 세로선 자리에 해당 */
+      border-left: 1px solid rgba(255,255,255,0.2);
     }
 
     /* 각 층 공통 스타일 */
@@ -102,19 +108,18 @@ body {
       border-top: 1px solid rgba(255,255,255,0.12);
     }
 
-    /* 텍스트 박스 (위쪽, 샤프트 옆에 딱) */
+    /* 텍스트 박스 (샤프트 옆) */
     .floor-inner {
       max-width: 760px;
-      margin-top: 1px;   /* 위에서 얼마나 내려올지 */
-      margin-left: 1px;  /* 샤프트 선에서 얼마나 떨어질지 – 이 값 줄이면 더 붙음 */
-      border: 1px solid rgba(255,255,255,0.12);
+      margin-top: 1px;
+      margin-left: 1px;
+      border: 1px solid rgba(255,255,255,0.2);
       padding: 16px 18px;
-      background: rgba(0,0,0,0.6); 
+      background: rgba(0,0,0,0.6);
       color: #E6E6E6;
       backdrop-filter: blur(4px);
-      border-color: rgba(255,255,255,0.2);
       position: relative;
-      z-index: 1;         /* 중앙 미디어 위에 떠 있게 */
+      z-index: 1;
     }
 
     .floor-label {
@@ -164,12 +169,12 @@ body {
       letter-spacing: 0.08em;
     }
 
-    /* 화면 중앙에 떡 하니 위치하는 미디어 영역 */
+    /* 화면 중앙에 위치하는 미디어 영역 */
     .floor-media {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);  /* 항상 화면 가운데 */
+      transform: translate(-50%, -50%);
       width: 60vw;
       max-width: 900px;
       display: flex;
@@ -177,7 +182,6 @@ body {
       align-items: center;
     }
 
-    /* 중앙에 하나의 큰 이미지/영상이 올 때 */
     .floor-media > img,
     .floor-media > video {
       display: block;
@@ -185,7 +189,7 @@ body {
       height: auto;
     }
 
-    /* 중앙에 썸네일 여러 개를 둘 때 */
+    /* 썸네일 갤러리 */
     .gallery {
       display: flex;
       gap: 12px;
@@ -279,7 +283,7 @@ body {
   <div class="scroll-hint">SCROLL ↓</div>
 
   <main>
-    <!-- 0층 : ABOUT (텍스트만, 중앙 미디어 없음이면 floor-media 생략 가능) -->
+    <!-- 0층 : ABOUT -->
     <section class="floor floor-0" id="floor-0">
       <div class="floor-inner">
         <div class="floor-label">0. ABOUT</div>
@@ -291,42 +295,39 @@ body {
       </div>
     </section>
 
-    <!-- -1층 : WORKS / Darkryscope (텍스트 + 중앙 썸네일 갤러리) -->
+    <!-- -1층 : WORKS -->
     <section class="floor floor--1" id="floor--1">
-      <!-- 화면 중앙 콘텐츠 -->
+      <!-- 중앙 썸네일 갤러리 -->
       <div class="floor-media">
         <div class="gallery">
-          <!-- 여기 src를 실제 이미지 경로로 바꿔 써 -->
+          <!-- src를 실제 이미지 경로로 교체 -->
           <img src="YOUR_IMAGE1.jpg" alt="work thumb 1" onclick="openLightbox(this.src)">
           <img src="YOUR_IMAGE2.jpg" alt="work thumb 2" onclick="openLightbox(this.src)">
           <img src="YOUR_IMAGE3.jpg" alt="work thumb 3" onclick="openLightbox(this.src)">
         </div>
       </div>
 
-      <!-- 위쪽 왼쪽 텍스트 박스 -->
-    <div class="floor-inner">
-  <div class="floor-label">-1. WORKS</div>
-  <h2>다크라이스코프 실험 Dacryscope Lab</h2>
+      <!-- 텍스트 박스 -->
+      <div class="floor-inner">
+        <div class="floor-label">-1. WORKS</div>
+        <h2>다크라이스코프 실험 Dacryscope Lab</h2>
 
-  <p>
-    다크라이스코프는 눈물 또는 눈물샘과의 관계를 나타내는 접두어 ‘Dacry-’와
-    보는 기계를 뜻하는 ‘-scope’를 합성한 단어로,
-    3D 가상 환경 속에서 시야의 신체성을 복원하기 위해 작가가 개발한 모델의 이름이다.
-  </p>
+        <p>
+          다크라이스코프는 눈물 또는 눈물샘과의 관계를 나타내는 접두어 ‘Dacry-’와
+          보는 기계를 뜻하는 ‘-scope’를 합성한 단어로,
+          3D 가상 환경 속에서 시야의 신체성을 복원하기 위해 작가가 개발한 모델의 이름이다.
+        </p>
 
-  <p>
-    작가는 렌즈 기반 화면에서 제거되는 실제 시야의 신체적 요소와 정서적 영향을 시각적 비체로 명명하고,
-    눈 깜빡임, 눈물, 시력 저하와 교정, 정서에 따른 눈의 심도 등을 연구하여
-    순간적인 암전과 눈물에 따른 왜곡이 생기는 가상 카메라를 만든다.
-  </p>
-</div>
+        <p>
+          작가는 렌즈 기반 화면에서 제거되는 실제 시야의 신체적 요소와 정서적 영향을 시각적 비체로 명명하고,
+          눈 깜빡임, 눈물, 시력 저하와 교정, 정서에 따른 눈의 심도 등을 연구하여
+          순간적인 암전과 눈물에 따른 왜곡이 생기는 가상 카메라를 만든다.
+        </p>
+      </div>
     </section>
 
     <!-- -2층 -->
     <section class="floor floor--2" id="floor--2">
-      <!-- 필요하다면 중앙 미디어 추가 가능 -->
-      <!-- <div class="floor-media"><img src="..." alt=""></div> -->
-
       <div class="floor-inner">
         <div class="floor-label">-2. HOME</div>
         <h2>Home / Memory</h2>
@@ -339,9 +340,6 @@ body {
 
     <!-- -3층 -->
     <section class="floor floor--3" id="floor--3">
-      <!-- 중앙 미디어가 있다면 여기에 -->
-      <!-- <div class="floor-media"><video ...></video></div> -->
-
       <div class="floor-inner">
         <div class="floor-label">-3. ORFEO</div>
         <h2>Orfeo / ecco</h2>
@@ -370,14 +368,7 @@ body {
     <section class="floor floor--5" id="floor--5">
       <div class="floor-inner">
         <div class="floor-label">-5. CONTACT / CV</div>
-        a {
-  color: #C7D2FF;      /* 살짝 푸른 회색 */
-  text-decoration: none;
-}
 
-a:hover {
-  text-decoration: underline;
-}
         <p>
           Email:
           <a href="mailto:a.parallel.one@gmail.com">a.parallel.one@gmail.com</a><br>
@@ -502,7 +493,3 @@ a:hover {
   </script>
 </body>
 </html>
-
-
-
-
