@@ -31,7 +31,6 @@
 
     body {
       position: relative;
-      transition: background 0.6s ease;
     }
 
     /* 링크 색상 */
@@ -91,13 +90,27 @@
     main {
       margin-left: 80px;
       border-left: 1px solid rgba(255,255,255,0.2);
+      position: relative;
+    }
+
+    /* 두 번째 설계용 세로선 */
+    #guide-line {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 260px; /* 기본 위치, JS가 층마다 바꿔줌 */
+      border-left: 1px solid rgba(255,255,255,0.35);
+      opacity: 0.8;
+      pointer-events: none;
+      z-index: 50;
+      transition: left 0.6s ease;  /* 층 바뀔 때 슥 움직이는 부분 */
     }
 
     /* 각 층 공통 스타일 */
     .floor {
       min-height: 100vh;
       padding: 40px 24px 80px;
-      position: relative; /* 중앙 콘텐츠 절대 위치 기준 */
+      position: relative;
     }
 
     /* 층 경계선(위쪽 얇은 선) */
@@ -110,7 +123,7 @@
       border-top: 1px solid rgba(255,255,255,0.12);
     }
 
-    /* 텍스트 박스 (샤프트 옆) – 기본(normal) 값 */
+    /* 텍스트 박스 (샤프트 옆) */
     .floor-inner {
       max-width: 760px;
       margin-top: 1px;
@@ -122,20 +135,6 @@
       backdrop-filter: blur(4px);
       position: relative;
       z-index: 1;
-
-      /* 폭/패딩이 모드에 따라 부드럽게 변하도록 */
-      transition: max-width 0.6s ease, padding 0.6s ease;
-    }
-
-    /* 모드에 따른 폭 변화 */
-    body.mode-narrow .floor-inner {
-      max-width: 520px;
-      padding: 14px 14px;
-    }
-
-    body.mode-wide .floor-inner {
-      max-width: 960px;
-      padding: 22px 24px;
     }
 
     .floor-label {
@@ -196,17 +195,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-
-      transition: width 0.6s ease;
-    }
-
-    /* 모드에 따라 미디어 폭도 함께 변화 */
-    body.mode-narrow .floor-media {
-      width: 46vw;
-    }
-
-    body.mode-wide .floor-media {
-      width: 70vw;
     }
 
     .floor-media > img,
@@ -291,6 +279,10 @@
       .cv-section {
         grid-template-columns: 120px auto;
       }
+
+      #guide-line {
+        display: none; /* 모바일에선 그냥 숨김 */
+      }
     }
   </style>
 </head>
@@ -307,11 +299,14 @@
     <button type="button" data-target="#floor--5">-5</button>
   </aside>
 
+  <!-- 움직이는 설계 선 -->
+  <div id="guide-line" aria-hidden="true"></div>
+
   <div class="scroll-hint">SCROLL ↓</div>
 
   <main>
-    <!-- 0층 : ABOUT (넓은 로비 느낌) -->
-    <section class="floor floor-0" id="floor-0" data-mode="wide">
+    <!-- 0층 : ABOUT (조금 넓은 로비 느낌 → 선을 약간 오른쪽) -->
+    <section class="floor floor-0" id="floor-0" data-line="260">
       <div class="floor-inner">
         <div class="floor-label">0. ABOUT</div>
         <p>Kim Rui 김루이</p>
@@ -322,8 +317,8 @@
       </div>
     </section>
 
-    <!-- -1층 : WORKS (좁은 기술실 느낌) -->
-    <section class="floor floor--1" id="floor--1" data-mode="narrow">
+    <!-- -1층 : WORKS (조금 더 좁게 → 선을 왼쪽으로) -->
+    <section class="floor floor--1" id="floor--1" data-line="220">
       <!-- 중앙 썸네일 갤러리 -->
       <div class="floor-media">
         <div class="gallery">
@@ -353,8 +348,8 @@
       </div>
     </section>
 
-    <!-- -2층 : HOME (기본 폭) -->
-    <section class="floor floor--2" id="floor--2" data-mode="normal">
+    <!-- -2층 : HOME (다시 약간 넓어지게) -->
+    <section class="floor floor--2" id="floor--2" data-line="250">
       <div class="floor-inner">
         <div class="floor-label">-2. HOME</div>
         <h2>Home / Memory</h2>
@@ -365,8 +360,8 @@
       </div>
     </section>
 
-    <!-- -3층 : ORFEO (다시 좁아지는 통로) -->
-    <section class="floor floor--3" id="floor--3" data-mode="narrow">
+    <!-- -3층 : ORFEO (가장 좁게) -->
+    <section class="floor floor--3" id="floor--3" data-line="210">
       <div class="floor-inner">
         <div class="floor-label">-3. ORFEO</div>
         <h2>Orfeo / ecco</h2>
@@ -377,8 +372,8 @@
       </div>
     </section>
 
-    <!-- -4층 : TEXTS (다시 넓어지는 홀) -->
-    <section class="floor floor--4" id="floor--4" data-mode="wide">
+    <!-- -4층 : TEXTS (꽤 넓게) -->
+    <section class="floor floor--4" id="floor--4" data-line="280">
       <div class="floor-inner">
         <div class="floor-label">-4. TEXTS</div>
         <h2>Texts / Writing</h2>
@@ -391,8 +386,8 @@
       </div>
     </section>
 
-    <!-- -5층: Contact / CV (기본 폭) -->
-    <section class="floor floor--5" id="floor--5" data-mode="normal">
+    <!-- -5층: Contact / CV (중간 정도) -->
+    <section class="floor floor--5" id="floor--5" data-line="240">
       <div class="floor-inner">
         <div class="floor-label">-5. CONTACT / CV</div>
 
@@ -476,10 +471,11 @@
       document.getElementById("lightbox").style.display = "none";
     }
 
-    // 엘리베이터 버튼/스크롤 + 모드 동기화
+    // 엘리베이터 버튼/스크롤 + 가이드라인 이동
     (function () {
       const buttons = document.querySelectorAll('.elevator button');
       const floors = document.querySelectorAll('.floor');
+      const guideLine = document.getElementById('guide-line');
 
       buttons.forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -490,6 +486,12 @@
           smoothScrollTo(top, 700);
           buttons.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
+
+          // 버튼으로 이동할 때도 선 위치 변경
+          const linePos = target.dataset.line;
+          if (linePos && guideLine) {
+            guideLine.style.left = linePos + 'px';
+          }
         });
       });
 
@@ -508,7 +510,6 @@
           }
         });
 
-        // 엘리베이터 active
         if (currentId) {
           buttons.forEach(b => {
             if (b.getAttribute('data-target') === currentId) {
@@ -519,19 +520,18 @@
           });
         }
 
-        // 현재 층의 data-mode에 따라 body에 모드 클래스 부여
-        document.body.classList.remove('mode-narrow', 'mode-normal', 'mode-wide');
-        if (currentFloor) {
-          const mode = currentFloor.dataset.mode || 'normal';
-          document.body.classList.add('mode-' + mode);
+        // 현재 층의 data-line 값으로 세로선 위치 이동
+        if (currentFloor && guideLine) {
+          const linePos = currentFloor.dataset.line || '260';
+          guideLine.style.left = linePos + 'px';
         }
       });
 
-      // 페이지 로드 시 처음 모드 설정 (0층 기준)
+      // 초기 위치: 첫 번째 층 기준
       const firstFloor = document.querySelector('.floor');
-      if (firstFloor) {
-        const mode = firstFloor.dataset.mode || 'normal';
-        document.body.classList.add('mode-' + mode);
+      if (firstFloor && guideLine) {
+        const linePos = firstFloor.dataset.line || '260';
+        guideLine.style.left = linePos + 'px';
       }
     })();
   </script>
