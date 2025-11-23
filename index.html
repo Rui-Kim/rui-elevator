@@ -86,31 +86,47 @@
       font-weight: 600;
     }
 
-    /* 콘텐츠 영역: 왼쪽 엘리베이터만큼 여백 + 샤프트 라인 */
+    /* 콘텐츠 영역: 왼쪽 엘리베이터만큼 여백 + 고정 세로선 */
     main {
       margin-left: 80px;
-      border-left: 1px solid rgba(255,255,255,0.2);
+      border-left: 1px solid rgba(255,255,255,0.18);
       position: relative;
     }
 
-    /* 두 번째 설계용 세로선 */
-    #guide-line {
+    /* === 건축 단면용 가이드 라인들 === */
+
+    /* 세로선: 화면 전체 높이를 가로지르는 1px 라인 (좌우로만 이동) */
+    #guide-line-v {
       position: fixed;
       top: 0;
       bottom: 0;
-      left: 260px; /* 기본 위치, JS가 층마다 바꿔줌 */
-      border-left: 1px solid rgba(255,255,255,0.35);
-      opacity: 0.8;
+      width: 0;
+      border-left: 1px solid rgba(255,255,255,0.20); /* 살짝 옅게 */
+      left: 140px; /* 초기값, JS에서 층마다 변경 */
       pointer-events: none;
-      z-index: 50;
-      transition: left 0.6s ease;  /* 층 바뀔 때 슥 움직이는 부분 */
+      z-index: 40;
+      transition: left 0.6s ease; /* 위치만 부드럽게 */
+    }
+
+    /* 가로선: 화면 전체 너비를 가로지르는 1px 라인 (위아래로만 이동) */
+    #guide-line-h {
+      position: fixed;
+      left: 0;
+      right: 0;
+      height: 0;
+      border-top: 1px solid rgba(255,255,255,0.20); /* 세로선과 동일한 느낌 */
+      top: 50%; /* 초기값, JS에서 층마다 변경 */
+      pointer-events: none;
+      z-index: 45;
+      transform: translateY(-50%);
+      transition: top 0.6s ease;
     }
 
     /* 각 층 공통 스타일 */
     .floor {
       min-height: 100vh;
       padding: 40px 24px 80px;
-      position: relative;
+      position: relative; /* 중앙 콘텐츠 절대 위치 기준 */
     }
 
     /* 층 경계선(위쪽 얇은 선) */
@@ -125,17 +141,18 @@
 
     /* 텍스트 박스 (샤프트 옆) */
     .floor-inner {
-      max-width: 760px;
-      margin-top: 1px;
-      margin-left: 1px;
-      border: 1px solid rgba(255,255,255,0.2);
-      padding: 16px 18px;
-      background: rgba(0,0,0,0.6);
-      color: #E6E6E6;
-      backdrop-filter: blur(4px);
-      position: relative;
-      z-index: 1;
-    }
+  max-width: 760px;
+  margin-top: 1px;
+  margin-left: 1px;
+  color: #E6E6E6;
+  position: relative;
+  z-index: 1;
+  /* 불필요한 박스 스타일 제거 */
+  border: none;
+  background: none;
+  backdrop-filter: none;
+  padding: 0;
+}
 
     .floor-label {
       font-size: 10px;
@@ -279,9 +296,9 @@
       .cv-section {
         grid-template-columns: 120px auto;
       }
-
-      #guide-line {
-        display: none; /* 모바일에선 그냥 숨김 */
+      #guide-line-v,
+      #guide-line-h {
+        display: none; /* 모바일에서는 선 숨김 */
       }
     }
   </style>
@@ -299,14 +316,20 @@
     <button type="button" data-target="#floor--5">-5</button>
   </aside>
 
-  <!-- 움직이는 설계 선 -->
-  <div id="guide-line" aria-hidden="true"></div>
+  <!-- 건축 가이드용 세로선 + 가로선 -->
+  <div id="guide-line-v" aria-hidden="true"></div>
+  <div id="guide-line-h" aria-hidden="true"></div>
 
   <div class="scroll-hint">SCROLL ↓</div>
 
   <main>
-    <!-- 0층 : ABOUT (조금 넓은 로비 느낌 → 선을 약간 오른쪽) -->
-    <section class="floor floor-0" id="floor-0" data-line="260">
+    <!-- 0층 : ABOUT (선이 비교적 오른쪽 / 위쪽) -->
+    <section
+      class="floor floor-0"
+      id="floor-0"
+      data-v="850"   #!-- 세로선 x 위치 --
+      data-h="90"    !-- 가로선 y 위치(vh %) --
+    >
       <div class="floor-inner">
         <div class="floor-label">0. ABOUT</div>
         <p>Kim Rui 김루이</p>
@@ -317,8 +340,13 @@
       </div>
     </section>
 
-    <!-- -1층 : WORKS (조금 더 좁게 → 선을 왼쪽으로) -->
-    <section class="floor floor--1" id="floor--1" data-line="220">
+    <!-- -1층 : WORKS (가장 좁은 느낌 → 세로선이 왼쪽으로, 가로선은 화면 중간 근처) -->
+    <section
+      class="floor floor--1"
+      id="floor--1"
+      data-v="103"
+      data-h="5"
+    >
       <!-- 중앙 썸네일 갤러리 -->
       <div class="floor-media">
         <div class="gallery">
@@ -348,8 +376,13 @@
       </div>
     </section>
 
-    <!-- -2층 : HOME (다시 약간 넓어지게) -->
-    <section class="floor floor--2" id="floor--2" data-line="250">
+    <!-- -2층 : HOME (다시 살짝 넓어지는 느낌 → 선이 약간 오른쪽 / 위) -->
+    <section
+      class="floor floor--2"
+      id="floor--2"
+      data-v="240"
+      data-h="70"
+    >
       <div class="floor-inner">
         <div class="floor-label">-2. HOME</div>
         <h2>Home / Memory</h2>
@@ -360,8 +393,13 @@
       </div>
     </section>
 
-    <!-- -3층 : ORFEO (가장 좁게) -->
-    <section class="floor floor--3" id="floor--3" data-line="210">
+    <!-- -3층 : ORFEO (좀 더 넓은 단면 → 선이 더 오른쪽 / 아래) -->
+    <section
+      class="floor floor--3"
+      id="floor--3"
+      data-v="550"
+      data-h="65"
+    >
       <div class="floor-inner">
         <div class="floor-label">-3. ORFEO</div>
         <h2>Orfeo / ecco</h2>
@@ -372,8 +410,13 @@
       </div>
     </section>
 
-    <!-- -4층 : TEXTS (꽤 넓게) -->
-    <section class="floor floor--4" id="floor--4" data-line="280">
+    <!-- -4층 : TEXTS -->
+    <section
+      class="floor floor--4"
+      id="floor--4"
+      data-v="750"
+      data-h="80"
+    >
       <div class="floor-inner">
         <div class="floor-label">-4. TEXTS</div>
         <h2>Texts / Writing</h2>
@@ -386,8 +429,13 @@
       </div>
     </section>
 
-    <!-- -5층: Contact / CV (중간 정도) -->
-    <section class="floor floor--5" id="floor--5" data-line="240">
+    <!-- -5층: Contact / CV (거의 다시 넓어진 느낌 → 선이 더 오른쪽 / 아래) -->
+    <section
+      class="floor floor--5"
+      id="floor--5"
+      data-v="850"
+      data-h="90"
+    >
       <div class="floor-inner">
         <div class="floor-label">-5. CONTACT / CV</div>
 
@@ -471,11 +519,20 @@
       document.getElementById("lightbox").style.display = "none";
     }
 
-    // 엘리베이터 버튼/스크롤 + 가이드라인 이동
+    // 엘리베이터 버튼/스크롤 + 가이드 라인 위치 변경
     (function () {
       const buttons = document.querySelectorAll('.elevator button');
       const floors = document.querySelectorAll('.floor');
-      const guideLine = document.getElementById('guide-line');
+      const vLine = document.getElementById('guide-line-v');
+      const hLine = document.getElementById('guide-line-h');
+
+      function applyGuideFromFloor(floor) {
+        if (!floor || !vLine || !hLine) return;
+        const v = floor.dataset.v || '140';  // px
+        const h = floor.dataset.h || '50';   // vh
+        vLine.style.left = v + 'px';
+        hLine.style.top = h + 'vh';
+      }
 
       buttons.forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -486,12 +543,7 @@
           smoothScrollTo(top, 700);
           buttons.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
-
-          // 버튼으로 이동할 때도 선 위치 변경
-          const linePos = target.dataset.line;
-          if (linePos && guideLine) {
-            guideLine.style.left = linePos + 'px';
-          }
+          applyGuideFromFloor(target);
         });
       });
 
@@ -520,19 +572,12 @@
           });
         }
 
-        // 현재 층의 data-line 값으로 세로선 위치 이동
-        if (currentFloor && guideLine) {
-          const linePos = currentFloor.dataset.line || '260';
-          guideLine.style.left = linePos + 'px';
-        }
+        applyGuideFromFloor(currentFloor);
       });
 
-      // 초기 위치: 첫 번째 층 기준
+      // 초기 상태: 첫 번째 층 기준으로 선 배치
       const firstFloor = document.querySelector('.floor');
-      if (firstFloor && guideLine) {
-        const linePos = firstFloor.dataset.line || '260';
-        guideLine.style.left = linePos + 'px';
-      }
+      applyGuideFromFloor(firstFloor);
     })();
   </script>
 </body>
