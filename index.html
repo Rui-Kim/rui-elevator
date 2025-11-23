@@ -31,18 +31,20 @@
 
     body {
       position: relative;
+      transition: background 0.6s ease;
     }
 
     /* 링크 색상 */
     a {
-    color: #7FBFFF;   /* 밝은 하늘색 */
-    text-decoration: none;
-  }
+      color: #7FBFFF;   /* 밝은 하늘색 */
+      text-decoration: none;
+    }
 
-  a:hover {
-    color: #A9C8FF;   /* 호버 시 더 밝은 색 */
-    text-decoration: underline;
-  }
+    a:hover {
+      color: #A9C8FF;   /* 호버 시 더 밝은 색 */
+      text-decoration: underline;
+    }
+
     /* FLOOR 글자 숨기기 */
     .elevator-label {
       display: none;
@@ -108,7 +110,7 @@
       border-top: 1px solid rgba(255,255,255,0.12);
     }
 
-    /* 텍스트 박스 (샤프트 옆) */
+    /* 텍스트 박스 (샤프트 옆) – 기본(normal) 값 */
     .floor-inner {
       max-width: 760px;
       margin-top: 1px;
@@ -120,6 +122,20 @@
       backdrop-filter: blur(4px);
       position: relative;
       z-index: 1;
+
+      /* 폭/패딩이 모드에 따라 부드럽게 변하도록 */
+      transition: max-width 0.6s ease, padding 0.6s ease;
+    }
+
+    /* 모드에 따른 폭 변화 */
+    body.mode-narrow .floor-inner {
+      max-width: 520px;
+      padding: 14px 14px;
+    }
+
+    body.mode-wide .floor-inner {
+      max-width: 960px;
+      padding: 22px 24px;
     }
 
     .floor-label {
@@ -180,6 +196,17 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
+      transition: width 0.6s ease;
+    }
+
+    /* 모드에 따라 미디어 폭도 함께 변화 */
+    body.mode-narrow .floor-media {
+      width: 46vw;
+    }
+
+    body.mode-wide .floor-media {
+      width: 70vw;
     }
 
     .floor-media > img,
@@ -283,8 +310,8 @@
   <div class="scroll-hint">SCROLL ↓</div>
 
   <main>
-    <!-- 0층 : ABOUT -->
-    <section class="floor floor-0" id="floor-0">
+    <!-- 0층 : ABOUT (넓은 로비 느낌) -->
+    <section class="floor floor-0" id="floor-0" data-mode="wide">
       <div class="floor-inner">
         <div class="floor-label">0. ABOUT</div>
         <p>Kim Rui 김루이</p>
@@ -295,8 +322,8 @@
       </div>
     </section>
 
-    <!-- -1층 : WORKS -->
-    <section class="floor floor--1" id="floor--1">
+    <!-- -1층 : WORKS (좁은 기술실 느낌) -->
+    <section class="floor floor--1" id="floor--1" data-mode="narrow">
       <!-- 중앙 썸네일 갤러리 -->
       <div class="floor-media">
         <div class="gallery">
@@ -326,8 +353,8 @@
       </div>
     </section>
 
-    <!-- -2층 -->
-    <section class="floor floor--2" id="floor--2">
+    <!-- -2층 : HOME (기본 폭) -->
+    <section class="floor floor--2" id="floor--2" data-mode="normal">
       <div class="floor-inner">
         <div class="floor-label">-2. HOME</div>
         <h2>Home / Memory</h2>
@@ -338,8 +365,8 @@
       </div>
     </section>
 
-    <!-- -3층 -->
-    <section class="floor floor--3" id="floor--3">
+    <!-- -3층 : ORFEO (다시 좁아지는 통로) -->
+    <section class="floor floor--3" id="floor--3" data-mode="narrow">
       <div class="floor-inner">
         <div class="floor-label">-3. ORFEO</div>
         <h2>Orfeo / ecco</h2>
@@ -350,8 +377,8 @@
       </div>
     </section>
 
-    <!-- -4층 -->
-    <section class="floor floor--4" id="floor--4">
+    <!-- -4층 : TEXTS (다시 넓어지는 홀) -->
+    <section class="floor floor--4" id="floor--4" data-mode="wide">
       <div class="floor-inner">
         <div class="floor-label">-4. TEXTS</div>
         <h2>Texts / Writing</h2>
@@ -364,8 +391,8 @@
       </div>
     </section>
 
-    <!-- -5층: Contact / CV -->
-    <section class="floor floor--5" id="floor--5">
+    <!-- -5층: Contact / CV (기본 폭) -->
+    <section class="floor floor--5" id="floor--5" data-mode="normal">
       <div class="floor-inner">
         <div class="floor-label">-5. CONTACT / CV</div>
 
@@ -449,7 +476,7 @@
       document.getElementById("lightbox").style.display = "none";
     }
 
-    // 엘리베이터 버튼/스크롤 동기화
+    // 엘리베이터 버튼/스크롤 + 모드 동기화
     (function () {
       const buttons = document.querySelectorAll('.elevator button');
       const floors = document.querySelectorAll('.floor');
@@ -469,6 +496,7 @@
       window.addEventListener('scroll', function () {
         const scrollPos = window.scrollY || window.pageYOffset;
         let currentId = null;
+        let currentFloor = null;
 
         floors.forEach(function (floor) {
           const offsetTop = floor.offsetTop;
@@ -476,9 +504,11 @@
           if (scrollPos >= offsetTop - height * 0.4 &&
               scrollPos < offsetTop + height * 0.6) {
             currentId = '#' + floor.id;
+            currentFloor = floor;
           }
         });
 
+        // 엘리베이터 active
         if (currentId) {
           buttons.forEach(b => {
             if (b.getAttribute('data-target') === currentId) {
@@ -488,9 +518,22 @@
             }
           });
         }
+
+        // 현재 층의 data-mode에 따라 body에 모드 클래스 부여
+        document.body.classList.remove('mode-narrow', 'mode-normal', 'mode-wide');
+        if (currentFloor) {
+          const mode = currentFloor.dataset.mode || 'normal';
+          document.body.classList.add('mode-' + mode);
+        }
       });
+
+      // 페이지 로드 시 처음 모드 설정 (0층 기준)
+      const firstFloor = document.querySelector('.floor');
+      if (firstFloor) {
+        const mode = firstFloor.dataset.mode || 'normal';
+        document.body.classList.add('mode-' + mode);
+      }
     })();
   </script>
 </body>
 </html>
-
