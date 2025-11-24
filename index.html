@@ -5,18 +5,10 @@
   <title>Kim Rui | Elevator Archive</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- 폰트: 한글 나눔고딕 -->
+  <!-- 한글 폰트: 나눔고딕 -->
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@300;400;700&display=swap" rel="stylesheet">
 
   <style>
-    /* 기본 폰트 설정 */
-    body {
-      font-family: "Nanum Gothic", sans-serif;
-    }
-    .eng {
-      font-family: "Menlo", monospace;
-    }
-
     * {
       box-sizing: border-box;
     }
@@ -24,45 +16,27 @@
     html, body {
       margin: 0;
       padding: 0;
-      background: #0A0A0A;
-      color: #DDE1E5;
+      background: #050505;      /* 완전 블랙보다 살짝 올라간 근검정 */
+      color: #E0E0E0;           /* 순백 대신 부드러운 회백 */
     }
 
     body {
+      font-family: "Nanum Gothic", sans-serif;
       position: relative;
     }
 
-    /* 링크 색상 */
+    .eng {
+      font-family: Menlo, monospace;
+      font-size: 1em;
+      letter-spacing: 0.02em;
+    }
+
     a {
-      color: #7FBFFF;   /* 밝은 하늘색 */
+      color: #E0E0E0;
       text-decoration: none;
     }
     a:hover {
-      color: #A9C8FF;
       text-decoration: underline;
-    }
-
-    /* ===== 건축 라인들 (세로선 2개 + 가로선 2개) ===== */
-    .frame-vert,
-    .frame-horiz {
-      position: fixed;
-      pointer-events: none;
-      background: rgba(255,255,255,0.05); /* 아주 옅은 선 */
-      z-index: 0;
-      transition: left 800ms cubic-bezier(0.33,0,0.1,1),
-                  top 800ms  cubic-bezier(0.33,0,0.1,1);
-    }
-
-    .frame-vert {
-      top: 0;
-      bottom: 0;
-      width: 1px;
-    }
-
-    .frame-horiz {
-      left: 0;
-      right: 0;
-      height: 1px;
     }
 
     /* FLOOR 글자 숨기기 */
@@ -91,7 +65,7 @@
       border: none;
       padding: 2px 0;
       font-size: 12px;
-      color: #FFFFFF;
+      color: #E0E0E0;
       cursor: pointer;
       opacity: 0.6;
       text-align: left;
@@ -110,9 +84,7 @@
     /* 콘텐츠 영역: 왼쪽 엘리베이터만큼 여백 + 샤프트 라인 */
     main {
       margin-left: 80px;
-      border-left: 1px solid rgba(255,255,255,0.2);
-      position: relative;
-      z-index: 1; /* 라인 위에 오도록 */
+      border-left: 1px solid rgba(255,255,255,0.16);
     }
 
     /* 각 층 공통 스타일 */
@@ -129,21 +101,21 @@
       top: 0;
       left: 0;
       right: 0;
-      border-top: 1px solid rgba(255,255,255,0.12);
+      border-top: 1px solid rgba(255,255,255,0.08);
     }
 
-    /* 텍스트 박스 (샤프트 옆) – 테두리 제거 */
+    /* 텍스트 박스 (위쪽, 샤프트 옆에 딱) */
     .floor-inner {
       max-width: 760px;
       margin-top: 1px;
       margin-left: 1px;
-      border: none;                    /* ← 박스 라인 제거 */
-      padding: 16px 18px;
-      background: rgba(0,0,0,0.6);
-      color: #E6E6E6;
-      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 20px 20px 18px;
+      background: rgba(0,0,0,0.70);      /* 살짝 투명한 박스 */
+      backdrop-filter: blur(4px);        /* 눈물막 같은 얇은 블러 */
+      color: #E0E0E0;
       position: relative;
-      z-index: 2;
+      z-index: 1;
     }
 
     .floor-label {
@@ -188,13 +160,12 @@
       right: 12px;
       bottom: 10px;
       font-size: 10px;
-      opacity: 0.5;
+      opacity: 0.4;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      z-index: 10;
     }
 
-    /* 화면 중앙에 위치하는 미디어 영역 */
+    /* 화면 중앙에 떡 하니 위치하는 미디어 영역 */
     .floor-media {
       position: absolute;
       top: 50%;
@@ -205,17 +176,17 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 1;
     }
 
     .floor-media > img,
-    .floor-media > video {
+    .floor-media > video,
+    .floor-media > iframe {
       display: block;
       width: 100%;
       height: auto;
     }
 
-    /* 썸네일 갤러리 */
+    /* 중앙에 썸네일 여러 개를 둘 때 */
     .gallery {
       display: flex;
       gap: 12px;
@@ -295,12 +266,6 @@
 </head>
 <body>
 
-  <!-- 건축 라인들 -->
-  <div class="frame-vert frame-vert-left"></div>
-  <div class="frame-vert frame-vert-right"></div>
-  <div class="frame-horiz frame-horiz-top"></div>
-  <div class="frame-horiz frame-horiz-bottom"></div>
-
   <!-- 엘리베이터 패널 -->
   <aside class="elevator" aria-label="Elevator navigation">
     <div class="elevator-label">FLOOR</div>
@@ -327,29 +292,27 @@
       </div>
     </section>
 
-    <!-- -1층 : WORKS -->
+    <!-- -1층 : WORKS / Dacryscope -->
     <section class="floor floor--1" id="floor--1">
-      <!-- 중앙 썸네일 갤러리 -->
+      <!-- 화면 중앙 콘텐츠 -->
       <div class="floor-media">
         <div class="gallery">
-          <!-- src를 실제 이미지 경로로 교체 -->
+          <!-- 여기 src를 실제 이미지 경로로 바꿔 써 -->
           <img src="YOUR_IMAGE1.jpg" alt="work thumb 1" onclick="openLightbox(this.src)">
           <img src="YOUR_IMAGE2.jpg" alt="work thumb 2" onclick="openLightbox(this.src)">
           <img src="YOUR_IMAGE3.jpg" alt="work thumb 3" onclick="openLightbox(this.src)">
         </div>
       </div>
 
-      <!-- 텍스트 박스 -->
+      <!-- 위쪽 왼쪽 텍스트 박스 -->
       <div class="floor-inner">
         <div class="floor-label">-1. WORKS</div>
         <h2>다크라이스코프 실험 Dacryscope Lab</h2>
-
         <p>
           다크라이스코프는 눈물 또는 눈물샘과의 관계를 나타내는 접두어 ‘Dacry-’와
           보는 기계를 뜻하는 ‘-scope’를 합성한 단어로,
           3D 가상 환경 속에서 시야의 신체성을 복원하기 위해 작가가 개발한 모델의 이름이다.
         </p>
-
         <p>
           작가는 렌즈 기반 화면에서 제거되는 실제 시야의 신체적 요소와 정서적 영향을 시각적 비체로 명명하고,
           눈 깜빡임, 눈물, 시력 저하와 교정, 정서에 따른 눈의 심도 등을 연구하여
@@ -360,6 +323,9 @@
 
     <!-- -2층 -->
     <section class="floor floor--2" id="floor--2">
+      <!-- 필요하면 중앙 미디어 추가 -->
+      <!-- <div class="floor-media"><img src="images/your_image.jpg" alt=""></div> -->
+
       <div class="floor-inner">
         <div class="floor-label">-2. HOME</div>
         <h2>Home / Memory</h2>
@@ -372,6 +338,9 @@
 
     <!-- -3층 -->
     <section class="floor floor--3" id="floor--3">
+      <!-- 중앙 미디어가 있다면 여기에 -->
+      <!-- <div class="floor-media"><video src="videos/your_video.mp4" controls></video></div> -->
+
       <div class="floor-inner">
         <div class="floor-label">-3. ORFEO</div>
         <h2>Orfeo / ecco</h2>
@@ -481,52 +450,20 @@
       document.getElementById("lightbox").style.display = "none";
     }
 
-    // 층별 라인 위치 설정
-    const frameConfigs = {
-      "#floor-0":  { v1: "10vw", v2: "90vw", h1: "35vh", h2: "65vh" }, // 가장 넓게
-      "#floor--1": { v1: "35vw", v2: "65vw", h1: "40vh", h2: "60vh" }, // 가장 좁게
-      "#floor--2": { v1: "28vw", v2: "72vw", h1: "38vh", h2: "62vh" },
-      "#floor--3": { v1: "24vw", v2: "76vw", h1: "36vh", h2: "64vh" },
-      "#floor--4": { v1: "20vw", v2: "80vw", h1: "34vh", h2: "66vh" },
-      "#floor--5": { v1: "18vw", v2: "82vw", h1: "32vh", h2: "68vh" }
-    };
-
-    const vertLeft  = document.querySelector(".frame-vert-left");
-    const vertRight = document.querySelector(".frame-vert-right");
-    const horizTop  = document.querySelector(".frame-horiz-top");
-    const horizBot  = document.querySelector(".frame-horiz-bottom");
-
-    function applyFrameConfig(floorSelector) {
-      const cfg = frameConfigs[floorSelector];
-      if (!cfg) return;
-
-      vertLeft.style.left  = cfg.v1;
-      vertRight.style.left = cfg.v2;
-      horizTop.style.top   = cfg.h1;
-      horizBot.style.top   = cfg.h2;
-    }
-
     // 엘리베이터 버튼/스크롤 동기화
     (function () {
       const buttons = document.querySelectorAll('.elevator button');
       const floors = document.querySelectorAll('.floor');
-
-      // 초기 상태: 0층 기준
-      applyFrameConfig("#floor-0");
 
       buttons.forEach(function (btn) {
         btn.addEventListener('click', function () {
           const targetSelector = btn.getAttribute('data-target');
           const target = document.querySelector(targetSelector);
           if (!target) return;
-
           const top = target.offsetTop;
           smoothScrollTo(top, 700);
-
           buttons.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
-
-          applyFrameConfig(targetSelector);
         });
       });
 
@@ -551,7 +488,6 @@
               b.classList.remove('active');
             }
           });
-          applyFrameConfig(currentId);
         }
       });
     })();
