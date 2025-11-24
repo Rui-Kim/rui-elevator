@@ -1,171 +1,96 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Kim Rui | Elevator Archive</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- 한글 폰트: 나눔고딕 -->
+  <!-- 폰트 -->
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@300;400;700&display=swap" rel="stylesheet">
 
   <style>
+    body {
+      font-family: "Nanum Gothic", sans-serif;
+      margin: 0;
+      background: #0A0A0A;
+      color: #DDE1E5;
+    }
     * {
       box-sizing: border-box;
     }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #050505;      /* 완전 블랙보다 살짝 올라간 근검정 */
-      color: #E0E0E0;           /* 순백 대신 부드러운 회백 */
-    }
-
-    body {
-      font-family: "Nanum Gothic", sans-serif;
-      position: relative;
-    }
-
-    .eng {
-      font-family: Menlo, monospace;
-      font-size: 1em;
-      letter-spacing: 0.02em;
-    }
-
     a {
-      color: #E0E0E0;
+      color: #7FBFFF;
       text-decoration: none;
     }
     a:hover {
+      color: #A9C8FF;
       text-decoration: underline;
     }
 
-    /* FLOOR 글자 숨기기 */
-    .elevator-label {
-      display: none;
-    }
-
-    /* 왼쪽 엘리베이터 패널 - 숫자만 */
+    /* 엘리베이터 버튼 */
     .elevator {
       position: fixed;
       left: 16px;
       top: 50%;
       transform: translateY(-50%);
-      background: transparent;
-      border: none;
-      padding: 0;
-      z-index: 100;
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
       gap: 4px;
+      flex-direction: column;
+      z-index: 10;
     }
-
     .elevator button {
       background: none;
       border: none;
       padding: 2px 0;
       font-size: 12px;
-      color: #E0E0E0;
+      color: #fff;
       cursor: pointer;
       opacity: 0.6;
-      text-align: left;
-      letter-spacing: 0.06em;
     }
-
+    .elevator button.active,
     .elevator button:hover {
-      opacity: 1;
-    }
-
-    .elevator button.active {
       opacity: 1;
       font-weight: 600;
     }
 
-    /* 콘텐츠 영역: 왼쪽 엘리베이터만큼 여백 + 샤프트 라인 */
+    /* 메인 */
     main {
       margin-left: 80px;
-      border-left: 1px solid rgba(255,255,255,0.16);
     }
 
-    /* 각 층 공통 스타일 */
     .floor {
       min-height: 100vh;
       padding: 40px 24px 80px;
       position: relative;
     }
 
-    /* 층 경계선(위쪽 얇은 선) */
-    .floor::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-
-    /* 텍스트 박스 (위쪽, 샤프트 옆에 딱) */
+    /* ✔ 텍스트 박스 배경을 전체 배경과 동일하게 + 박스 테두리 제거 */
     .floor-inner {
       max-width: 760px;
-      margin-top: 1px;
-      margin-left: 1px;
-      border: 1px solid rgba(255,255,255,0.18);
-      padding: 20px 20px 18px;
-      background: rgba(0,0,0,0.70);      /* 살짝 투명한 박스 */
-      backdrop-filter: blur(4px);        /* 눈물막 같은 얇은 블러 */
-      color: #E0E0E0;
+      background: #0A0A0A;
+      border: none;
+      padding: 8px 4px 0;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
     .floor-label {
       font-size: 10px;
-      text-transform: uppercase;
       letter-spacing: 0.16em;
       opacity: 0.6;
-      margin-bottom: 6px;
     }
-
-    .floor h1,
     .floor h2 {
+      margin: 6px 0 10px;
       font-size: 14px;
-      margin: 0 0 8px 0;
       font-weight: 600;
     }
-
     .floor p {
       font-size: 12px;
       line-height: 1.6;
-      margin: 4px 0;
     }
 
-    .hint {
-      margin-top: 12px;
-      font-size: 10px;
-      opacity: 0.6;
-    }
-
-    ul {
-      margin: 8px 0 0 0;
-      padding-left: 16px;
-    }
-
-    ul li {
-      font-size: 12px;
-      margin-bottom: 4px;
-    }
-
-    .scroll-hint {
-      position: fixed;
-      right: 12px;
-      bottom: 10px;
-      font-size: 10px;
-      opacity: 0.4;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    /* 화면 중앙에 떡 하니 위치하는 미디어 영역 */
+    /* 중앙 미디어 */
     .floor-media {
       position: absolute;
       top: 50%;
@@ -173,324 +98,170 @@
       transform: translate(-50%, -50%);
       width: 60vw;
       max-width: 900px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      z-index: 1;
     }
 
-    .floor-media > img,
-    .floor-media > video,
-    .floor-media > iframe {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-    /* 중앙에 썸네일 여러 개를 둘 때 */
     .gallery {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
       justify-content: center;
     }
-
     .gallery img {
       width: 140px;
       height: auto;
+      border: 1px solid rgba(255, 255, 255, 0.4);
       cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.4);
-      transition: 0.2s;
     }
 
-    .gallery img:hover {
-      opacity: 0.7;
-    }
-
-    /* 라이트박스 (큰 이미지 보기) */
-    .lightbox {
-      display: none;
+    /* ✔ 세로선 1개 */
+    .vertical-line {
       position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.75);
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
+      top: 0;
+      height: 100vh;
+      width: 1px;
+      background: rgba(255,255,255,0.22); /* 더 눈에 띄게 */
+      z-index: 0;
+      transition: all 0.8s ease;
     }
 
-    .lightbox img {
-      max-width: 90%;
-      max-height: 90%;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    /* ✔ 가로선 2개 */
+    .horizontal-line {
+      position: fixed;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: rgba(255,255,255,0.22);
+      z-index: 0;
+      transition: all 0.8s ease;
     }
 
-    /* CV 2열 레이아웃 */
-    .cv-section {
-      display: grid;
-      grid-template-columns: 160px auto;
-      column-gap: 24px;
-      margin-bottom: 40px;
-    }
-
-    .cv-section h3 {
-      font-size: 12px;
-      font-weight: 600;
-      margin: 0;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .cv-section .cv-items {
-      font-size: 12px;
-      line-height: 1.7;
-      white-space: pre-line;
-    }
-
+    /* 모바일 */
     @media (max-width: 768px) {
-      .elevator {
-        left: 8px;
-      }
-      main {
-        margin-left: 64px;
-      }
-      .floor-inner {
-        margin: 32px 16px 0;
-      }
-      .floor-media {
-        width: 80vw;
-      }
-      .cv-section {
-        grid-template-columns: 120px auto;
-      }
+      main { margin-left: 64px; }
+      .floor-inner { margin: 32px 16px 0; }
     }
   </style>
 </head>
+
 <body>
 
-  <!-- 엘리베이터 패널 -->
-  <aside class="elevator" aria-label="Elevator navigation">
-    <div class="elevator-label">FLOOR</div>
-    <button type="button" data-target="#floor-0">0</button>
-    <button type="button" data-target="#floor--1">-1</button>
-    <button type="button" data-target="#floor--2">-2</button>
-    <button type="button" data-target="#floor--3">-3</button>
-    <button type="button" data-target="#floor--4">-4</button>
-    <button type="button" data-target="#floor--5">-5</button>
+  <!-- ✔ 세로선 + 가로선 2개 -->
+  <div id="vline" class="vertical-line"></div>
+  <div id="hline1" class="horizontal-line"></div>
+  <div id="hline2" class="horizontal-line"></div>
+
+  <!-- 엘리베이터 -->
+  <aside class="elevator">
+    <button data-target="#floor-0">0</button>
+    <button data-target="#floor--1">-1</button>
+    <button data-target="#floor--2">-2</button>
+    <button data-target="#floor--3">-3</button>
+    <button data-target="#floor--4">-4</button>
+    <button data-target="#floor--5">-5</button>
   </aside>
 
-  <div class="scroll-hint">SCROLL ↓</div>
-
   <main>
-    <!-- 0층 : ABOUT -->
-    <section class="floor floor-0" id="floor-0">
+
+    <!-- 0층 -->
+    <section class="floor" id="floor-0">
       <div class="floor-inner">
         <div class="floor-label">0. ABOUT</div>
         <p>Kim Rui 김루이</p>
-        <p>Video &amp; 3D-based artist.</p>
+        <p>Video & 3D-based artist.</p>
         <p>현실의 불확실성과 통제 불가능함을 3D 환경 속에서 다시 탐구한다.</p>
-        <p>스크린을 인간과 기계, 감각과 기술의 접면으로 바라보며, 시각성을 재전유한 작업을 한다.</p>
-        <p>그리고 매끄럽지 않은 시각 경험을 구성하여 드러나는 또 다른 현실을 사유한다.</p>
+        <p>스크린을 인간과 기계, 감각과 기술의 접면으로 바라본다.</p>
       </div>
     </section>
 
-    <!-- -1층 : WORKS / Dacryscope -->
-    <section class="floor floor--1" id="floor--1">
-      <!-- 화면 중앙 콘텐츠 -->
+    <!-- -1층 -->
+    <section class="floor" id="floor--1">
       <div class="floor-media">
         <div class="gallery">
-          <!-- 여기 src를 실제 이미지 경로로 바꿔 써 -->
-          <img src="YOUR_IMAGE1.jpg" alt="work thumb 1" onclick="openLightbox(this.src)">
-          <img src="YOUR_IMAGE2.jpg" alt="work thumb 2" onclick="openLightbox(this.src)">
-          <img src="YOUR_IMAGE3.jpg" alt="work thumb 3" onclick="openLightbox(this.src)">
+          <img src="YOUR_IMAGE1.jpg" />
+          <img src="YOUR_IMAGE2.jpg" />
+          <img src="YOUR_IMAGE3.jpg" />
         </div>
       </div>
 
-      <!-- 위쪽 왼쪽 텍스트 박스 -->
       <div class="floor-inner">
         <div class="floor-label">-1. WORKS</div>
-        <h2>다크라이스코프 실험 Dacryscope Lab</h2>
-        <p>
-          다크라이스코프는 눈물 또는 눈물샘과의 관계를 나타내는 접두어 ‘Dacry-’와
-          보는 기계를 뜻하는 ‘-scope’를 합성한 단어로,
-          3D 가상 환경 속에서 시야의 신체성을 복원하기 위해 작가가 개발한 모델의 이름이다.
-        </p>
-        <p>
-          작가는 렌즈 기반 화면에서 제거되는 실제 시야의 신체적 요소와 정서적 영향을 시각적 비체로 명명하고,
-          눈 깜빡임, 눈물, 시력 저하와 교정, 정서에 따른 눈의 심도 등을 연구하여
-          순간적인 암전과 눈물에 따른 왜곡이 생기는 가상 카메라를 만든다.
-        </p>
+        <h2>Dacryscope Lab</h2>
+        <p>다크라이스코프는 눈물과 시야의 신체성을 복원하기 위한 모델이다.</p>
       </div>
     </section>
 
     <!-- -2층 -->
-    <section class="floor floor--2" id="floor--2">
-      <!-- 필요하면 중앙 미디어 추가 -->
-      <!-- <div class="floor-media"><img src="images/your_image.jpg" alt=""></div> -->
-
+    <section class="floor" id="floor--2">
       <div class="floor-inner">
         <div class="floor-label">-2. HOME</div>
         <h2>Home / Memory</h2>
-        <p>
-          17살의 집, 돌아갈 수 없는 공간, 기다림과 발작처럼 끊기는 시야에 대한 작업들.
-          &lt;피크노렙시(발작들)&gt;, &lt;파푸타&gt; 등으로 이어지는 축입니다.
-        </p>
+        <p>17살의 집, 돌아갈 수 없는 장소, 발작처럼 끊기는 시야.</p>
       </div>
     </section>
 
     <!-- -3층 -->
-    <section class="floor floor--3" id="floor--3">
-      <!-- 중앙 미디어가 있다면 여기에 -->
-      <!-- <div class="floor-media"><video src="videos/your_video.mp4" controls></video></div> -->
-
+    <section class="floor" id="floor--3">
       <div class="floor-inner">
         <div class="floor-label">-3. ORFEO</div>
         <h2>Orfeo / ecco</h2>
-        <p>
-          오르페오, 조명, 카메라-빛의 관계, 뒤돌아봄과 죽음에 대한 시퀀스.
-          마주보는 스크린, 조도의 변화, 목소리와 잔향을 다룹니다.
-        </p>
+        <p>오르페오, 조명, 카메라-빛의 관계를 다룬 시퀀스.</p>
       </div>
     </section>
 
     <!-- -4층 -->
-    <section class="floor floor--4" id="floor--4">
+    <section class="floor" id="floor--4">
       <div class="floor-inner">
         <div class="floor-label">-4. TEXTS</div>
-        <h2>Texts / Writing</h2>
-        <p>비평, 서문, 작가 노트 등의 아카이브.</p>
-        <ul>
-          <li>「스크린과 껍질」 – 윤태균</li>
-          <li>Artist Statement (2025)</li>
-          <li>Notes on “피크노렙시(발작들)”</li>
-        </ul>
+        <h2>Texts</h2>
+        <p>비평, 서문, 노트.</p>
       </div>
     </section>
 
-    <!-- -5층: Contact / CV -->
-    <section class="floor floor--5" id="floor--5">
+    <!-- -5층 -->
+    <section class="floor" id="floor--5">
       <div class="floor-inner">
         <div class="floor-label">-5. CONTACT / CV</div>
-
-        <p>
-          Email:
-          <a href="mailto:a.parallel.one@gmail.com">a.parallel.one@gmail.com</a><br>
-          Instagram:
-          <a href="https://www.instagram.com/rui_zzang__/" target="_blank">@rui_zzang__</a>
-        </p>
-
-        <div style="height: 24px;"></div>
-
-        <div class="cv-section">
-          <h3>Education</h3>
-          <div class="cv-items">
-2025 한국예술종합학교 조형예술과 전문사 비디오아트 전공 재학
-2019 추계예술대학교 서양화과 졸업
-          </div>
-        </div>
-
-        <div class="cv-section">
-          <h3>Exhibition</h3>
-          <div class="cv-items">
-2025 개인전 &lt;Pull the camera back more… now it's near the retina&gt; 팩션.
-2024 &lt;NEMAF 서울국제대안영상예술 페스티벌 뉴미디어 경쟁부문&gt; 별관.
-2024 &lt;데이터로 재환원하는 일상실천미술관&gt; 서울특별시 서대문구 가재울로47 57-2, 아이공.
-2024 WESS:전시후도록. 다팜, Adocs.
-2023 &lt;Video delight × Couch potato&gt; 00의 00.
-2023 &lt;스크리닝 프로그램 : 가라앉아, 일으켜, 이어&gt; 안팎 스페이스.
-2023 &lt;Loose me tight&gt; 갤러리 175.
-          </div>
-        </div>
-
-        <div class="cv-section">
-          <h3>Text</h3>
-          <div class="cv-items">
-2023 &lt;Road is Land : 로드 이즈 랜드&gt; 글 「주워 온 모든 것」 원정인. 원인앤이펙트.
-2023 &lt;Loose me tight&gt; 갤러리 175. 「'Loose me, tight'.」 서문.
-          </div>
-        </div>
-
+        <p>Email: <a href="mailto:a.parallel.one@gmail.com">a.parallel.one@gmail.com</a></p>
       </div>
     </section>
+
   </main>
 
-  <!-- 라이트박스 -->
-  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-    <img id="lightbox-img" alt="">
-  </div>
-
   <script>
-    // 부드러운 스크롤
-    function smoothScrollTo(targetY, duration) {
-      const startY = window.scrollY || window.pageYOffset;
-      const diff = targetY - startY;
-      const startTime = performance.now();
-      const d = duration || 600;
+    const sections = document.querySelectorAll(".floor");
+    const buttons = document.querySelectorAll(".elevator button");
 
-      function easeInOut(t) {
-        return 0.5 - Math.cos(Math.PI * t) / 2;
-      }
+    const v = document.getElementById("vline");
+    const h1 = document.getElementById("hline1");
+    const h2 = document.getElementById("hline2");
 
-      function step(now) {
-        const elapsed = now - startTime;
-        const t = Math.min(1, elapsed / d);
-        const eased = easeInOut(t);
-        window.scrollTo(0, startY + diff * eased);
-        if (elapsed < d) requestAnimationFrame(step);
-      }
+    const vWidths = [850,150,300,500,650,800];
+    const h1Positions = [20,150,280,340,420,500];
+    const h2Positions = [120,240,360,440,520,600];
 
-      requestAnimationFrame(step);
+    function updateLines(index){
+      v.style.left = vWidths[index] + "px";
+      h1.style.top = h1Positions[index] + "px";
+      h2.style.top = h2Positions[index] + "px";
     }
 
-    // 라이트박스 열고 닫기
-    function openLightbox(src) {
-      document.getElementById("lightbox-img").src = src;
-      document.getElementById("lightbox").style.display = "flex";
-    }
-
-    function closeLightbox() {
-      document.getElementById("lightbox").style.display = "none";
-    }
-
-    // 엘리베이터 버튼/스크롤 동기화
-    (function () {
-      const buttons = document.querySelectorAll('.elevator button');
-      const floors = document.querySelectorAll('.floor');
-
-      buttons.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          const targetSelector = btn.getAttribute('data-target');
-          const target = document.querySelector(targetSelector);
-          if (!target) return;
-          const top = target.offsetTop;
-          smoothScrollTo(top, 700);
-          buttons.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-        });
+    buttons.forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const target = document.querySelector(btn.dataset.target);
+        window.scrollTo({top:target.offsetTop,behavior:"smooth"});
       });
+    });
 
-      window.addEventListener('scroll', function () {
-        const scrollPos = window.scrollY || window.pageYOffset;
-        let currentId = null;
-
-        floors.forEach(function (floor) {
-          const offsetTop = floor.offsetTop;
-          const height = floor.offsetHeight;
-          if (scrollPos >= offsetTop - height * 0.4 &&
-              scrollPos < offsetTop + height * 0.6) {
-            currentId = '#' + floor.id;
-          }
-        });
-
-        if (currentId) {
-          buttons.forEach(b => {
-            if (b.getAttribute('data-target') === currentId) {
-              b.classList.add('active');
-            } else {
-              b.classList.remove('active');
-            }
-          });
-        }
+    window.addEventListener("scroll",()=>{
+      const pos = window.scrollY;
+      sections.forEach((sec,i)=>{
+        const top=sec.offsetTop;
+        const h=sec.offsetHeight;
+        if(pos>=top-h*0.4 && pos<top+h*0.5){ updateLines(i); }
       });
-    })();
+    });
   </script>
+
 </body>
 </html>
