@@ -19,7 +19,7 @@ body {
   background: #0A0A0A;
   color: #DDE1E5;
   overflow-x: hidden;
-  font-size: 10px;  /* 전체 기본 텍스트 */
+  font-size: 10px;
 }
 
 h1, h2, h3 {
@@ -41,10 +41,8 @@ a:hover {
 }
 
 /* ------------------------------ */
-/* 레이아웃 */
-/* ------------------------------ */
-
 /* 엘리베이터 버튼 */
+/* ------------------------------ */
 .elevator {
   position: fixed;
   left: 16px;
@@ -81,10 +79,9 @@ main {
   position: relative;
   min-height: 100vh;
   padding: 40px 24px 80px;
-  z-index: 2; /* 텍스트 가장 위 */
+  z-index: 2;
 }
 
-/* 텍스트 박스 → 완전히 투명 */
 .floor-inner {
   background: transparent;
   border: none;
@@ -94,7 +91,6 @@ main {
   max-width: 760px;
 }
 
-/* 중앙 미디어 */
 .floor-media {
   position: absolute;
   top: 50%;
@@ -107,14 +103,8 @@ main {
   z-index: 2;
 }
 
-.floor-media img,
-.floor-media video {
-  width: 100%;
-  height: auto;
-}
-
 /* ------------------------------ */
-/* 갤러리 (썸네일) */
+/* 썸네일 갤러리 */
 /* ------------------------------ */
 .gallery {
   display: flex;
@@ -129,6 +119,50 @@ main {
 }
 .gallery img:hover {
   opacity: 0.7;
+}
+
+/* ------------------------------ */
+/* ENTER / EXIT 버튼 */
+/* ------------------------------ */
+.floor-controls {
+  margin-top: 8px;
+}
+.floor-controls button {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.5);
+  color: #DDE1E5;
+  font-size: 10px;
+  padding: 4px 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.floor-controls button:hover {
+  background: #DDE1E5;
+  color: #0A0A0A;
+}
+
+/* ------------------------------ */
+/* 펼쳐지는 영상 패널 */
+/* ------------------------------ */
+.floor-video-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.6s ease;
+  margin-top: 60vh;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.floor-video-panel-inner {
+  max-width: 900px;
+  margin: 0 auto 80px auto;
+}
+
+.floor-video-panel iframe {
+  width: 100%;
+  height: 500px;
+  display: block;
 }
 
 /* ------------------------------ */
@@ -149,30 +183,27 @@ main {
 }
 
 /* ------------------------------ */
-/* 설계도 선(라인) → 배경 레이어 */
+/* 배경 선 */
 /* ------------------------------ */
 .line-vertical {
   position: fixed;
   top: 0;
   height: 100vh;
   width: 1px;
-  background: rgba(255,255,255,0.22); /* ← 조금 더 눈에 띄게 */
+  background: rgba(255,255,255,0.22);
   z-index: 0;
   transition: all 1s ease;
 }
-
 .line-horizontal {
   position: fixed;
   left: 0;
   width: 100%;
   height: 1px;
-  background: rgba(255,255,255,0.22); /* ← 조금 더 눈에 띄게 */
+  background: rgba(255,255,255,0.22);
   z-index: 0;
   transition: all 1s ease;
 }
 
-/* ------------------------------ */
-/* 미디어쿼리 */
 /* ------------------------------ */
 @media (max-width: 768px) {
   main { margin-left: 60px; }
@@ -195,7 +226,7 @@ main {
 </aside>
 
 <!-- ======================================================= -->
-<!-- 선(라인) 3개: 세로 1 / 가로 2 -->
+<!-- 배경 선 -->
 <!-- ======================================================= -->
 <div class="line-vertical" id="vline"></div>
 <div class="line-horizontal" id="hline1"></div>
@@ -218,21 +249,49 @@ main {
   </div>
 </section>
 
-<!-- -1층 -->
+
+<!-- ======================================================= -->
+<!-- -1층 Darkryscope (예시 작품: 완성형 구조) -->
+<!-- ======================================================= -->
 <section class="floor" id="floor--1">
+
+  <!-- 썸네일 -->
   <div class="floor-media">
     <div class="gallery">
-      <img src="YOUR_IMAGE1.jpg" onclick="openLightbox(this.src)">
-      <img src="YOUR_IMAGE2.jpg" onclick="openLightbox(this.src)">
-      <img src="YOUR_IMAGE3.jpg" onclick="openLightbox(this.src)">
+      <img src="media/dacry_still_001.jpg" onclick="openLightbox(this.src)">
+      <img src="media/dacryscope_still(2).jpg" onclick="openLightbox(this.src)">
+      <img src="media/dacryscope_still(3).jpg" onclick="openLightbox(this.src)">
     </div>
   </div>
 
+  <!-- 제목 + 설명 + ENTER -->
   <div class="floor-inner">
     <h2>다크라이스코프 실험</h2>
-    <p>다크라이스코프는 눈물과 시야의 신체성을 복원하기 위한...</p>
+    <p>눈물, 망막, 그리고 촉각적 시야를 재현하려는 실험적 시퀀스.</p>
+
+    <div class="floor-controls">
+      <button data-enter>ENTER</button>
+      <button data-exit style="display:none;">EXIT</button>
+    </div>
   </div>
+
+  <!-- 펼쳐지는 패널 -->
+  <div class="floor-video-panel">
+    <div class="floor-video-panel-inner">
+
+      <!-- Vimeo embed -->
+      <iframe 
+        src="https://player.vimeo.com/video/123456789" 
+        frameborder="0" 
+        allow="autoplay; fullscreen; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+
+    </div>
+  </div>
+
 </section>
+
 
 <!-- -2층 -->
 <section class="floor" id="floor--2">
@@ -242,6 +301,7 @@ main {
   </div>
 </section>
 
+
 <!-- -3층 -->
 <section class="floor" id="floor--3">
   <div class="floor-inner">
@@ -249,6 +309,7 @@ main {
     <p>조명, 카메라, 뒤돌아봄과 잔향의 시퀀스.</p>
   </div>
 </section>
+
 
 <!-- -4층 -->
 <section class="floor" id="floor--4">
@@ -258,6 +319,7 @@ main {
   </div>
 </section>
 
+
 <!-- -5층 -->
 <section class="floor" id="floor--5">
   <div class="floor-inner">
@@ -266,6 +328,7 @@ main {
     <p>Instagram: <a href="https://www.instagram.com/rui_zzang__">@rui_zzang__</a></p>
   </div>
 </section>
+
 
 </main>
 
@@ -278,15 +341,13 @@ main {
 
 <script>
 /* ---------------------------------------- */
-/* 부드러운 스크롤 */
-/* ---------------------------------------- */
+/* smooth scroll */
 function smoothScrollTo(targetY) {
   window.scrollTo({ top: targetY, behavior: 'smooth' });
 }
 
 /* ---------------------------------------- */
 /* 라이트박스 */
-/* ---------------------------------------- */
 function openLightbox(src) {
   document.getElementById('lightbox-img').src = src;
   document.getElementById('lightbox').style.display = 'flex';
@@ -296,7 +357,39 @@ function closeLightbox() {
 }
 
 /* ---------------------------------------- */
-/* 라인 애니메이션: 층마다 다른 위치/폭 */
+/* ENTER / EXIT : 층 확장 / 접기 */
+/* ---------------------------------------- */
+document.querySelectorAll('.floor').forEach(floor => {
+  const enterBtn = floor.querySelector('[data-enter]');
+  const exitBtn  = floor.querySelector('[data-exit]');
+  const panel    = floor.querySelector('.floor-video-panel');
+
+  if (!enterBtn || !exitBtn || !panel) return;
+
+  enterBtn.addEventListener('click', () => {
+    const fullHeight = panel.scrollHeight;
+    panel.style.maxHeight = fullHeight + 'px';
+
+    enterBtn.style.display = 'none';
+    exitBtn.style.display  = 'inline-block';
+
+    const rect = panel.getBoundingClientRect();
+    const offset = window.scrollY + rect.top - (window.innerHeight * 0.1);
+    window.scrollTo({ top: offset, behavior: 'smooth' });
+  });
+
+  exitBtn.addEventListener('click', () => {
+    panel.style.maxHeight = '0px';
+    exitBtn.style.display  = 'none';
+    enterBtn.style.display = 'inline-block';
+
+    const offset = floor.offsetTop;
+    window.scrollTo({ top: offset, behavior: 'smooth' });
+  });
+});
+
+/* ---------------------------------------- */
+/* 라인 애니메이션 (기존) */
 /* ---------------------------------------- */
 const vline = document.getElementById("vline");
 const h1 = document.getElementById("hline1");
@@ -306,7 +399,6 @@ function updateLines() {
   const y = window.scrollY;
   const h = window.innerHeight;
 
-  /* 층별 위치 계산 */
   const section = [...document.querySelectorAll(".floor")].find(sec => {
     const top = sec.offsetTop;
     const bottom = top + sec.offsetHeight;
@@ -316,7 +408,6 @@ function updateLines() {
   if (!section) return;
 
   switch(section.id) {
-
     case "floor-0":
       vline.style.left = "900px";
       h1.style.top = "5vh";
@@ -371,10 +462,3 @@ document.querySelectorAll('.elevator button').forEach(btn => {
 
 </body>
 </html>
-
-
-
-
-
-
-
