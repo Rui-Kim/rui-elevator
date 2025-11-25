@@ -139,7 +139,7 @@ main {
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
-.exit-btn:hover {
+.enter-btn:hover {
   background: rgba(255,255,255,0.15); /* 아주 은은한 hover */
   color: #0A0A0A;
 }
@@ -189,22 +189,24 @@ main {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  bottom: -50px;
 
-  bottom: -50px; /* 영상과의 간격 */
-  background: transparent;
+  background: transparent;  
   border: 1px solid rgba(255,255,255,0.5);
   color: #DDE1E5;
-  padding: 4px 14px;
   font-size: 10px;
+  padding: 4px 12px;
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  width: auto;         /* 🔥 핵심 */
+  width: auto;
 }
+
 .exit-btn:hover {
-  background: rgba(255,255,255,0.15);
-  color: #0A0A0A;
+  background: rgba(255,255,255,0.1); /* ENTER와 동일하게 매우 은은하게 */
+  color: #DDE1E5;  /* hover 시 글씨도 그대로 */
 }
+
 
 /* ------------------------------ */
 /* 라이트박스 */
@@ -506,5 +508,6 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
+
 
 
