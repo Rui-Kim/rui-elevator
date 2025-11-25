@@ -129,21 +129,24 @@ main {
 }
 
 /* ENTER 버튼 (썸네일 밑 중앙) */
-.enter-btn {
+.exit-btn {
+  position: absolute;
+  right: 0;
+  bottom: -40px;
   background: none;
   border: 1px solid rgba(255,255,255,0.5);
   color: #DDE1E5;
   font-size: 10px;
-  padding: 4px 12px;
+  padding: 4px 10px;
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
-.enter-btn:hover {
+
+.exit-btn:hover {
   background: #DDE1E5;
   color: #0A0A0A;
 }
-
 /* ------------------------------ */
 /* 펼쳐지는 영상 영역 : 썸네일 아래 */
 /* ------------------------------ */
@@ -375,6 +378,17 @@ function closeLightbox() {
   document.getElementById('lightbox').style.display = 'none';
 }
 
+  /* 현재 층에 따라 엘리베이터 버튼 active */
+function updateElevatorActive(sectionId) {
+  document.querySelectorAll('.elevator button').forEach(btn => {
+    if (btn.dataset.target === `#${sectionId}`) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+}
+  
 /* 설계도 라인 애니메이션 */
 const vline = document.getElementById("vline");
 const h1 = document.getElementById("hline1");
@@ -428,7 +442,8 @@ function updateLines() {
 
 window.addEventListener('scroll', updateLines);
 updateLines();
-
+updateElevatorActive(section.id);
+  
 /* 엘리베이터 버튼 */
 document.querySelectorAll('.elevator button').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -474,3 +489,4 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
+
