@@ -306,15 +306,18 @@ main {
   </div>
 
   <!-- 펼쳐지는 상영관 영역 (Vimeo 예시) -->
-  <div class="floor-video-panel">
-    <div class="floor-video-panel-inner">
-      <iframe src="<iframe src="<iframe title="vimeo-player" src="https://player.vimeo.com/video/1077242763?h=8fc5041d99" width="640" height="360" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"   allowfullscreen></iframe>"
-              frameborder="0"
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowfullscreen>
-      </iframe>
+<div class="floor-video-panel">
+  <div class="floor-video-panel-inner">
 
-      <button type="button" class="exit-btn" data-exit>EXIT</button>
+    <iframe 
+      src="https://player.vimeo.com/video/1077242763?h=8fc5041d99&title=0&byline=0&portrait=0" 
+      width="640" height="360" 
+      frameborder="0"
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+
+    <button type="button" class="exit-btn" data-exit>EXIT</button>
     </div>
   </div>
 </section>
@@ -491,5 +494,6 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
+
 
 
