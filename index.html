@@ -129,7 +129,11 @@ main {
 }
 
 /* ENTER 버튼 (썸네일 밑 중앙) */
-.enter-btn {
+.exit-btn {
+  position: absolute;
+  left: 50%;
+  bottom: -60px;       /* 영상 아래 공백 증가 */
+  transform: translateX(-50%);  /* 가운데 정렬 */
   background: none;
   border: 1px solid rgba(255,255,255,0.5);
   color: #DDE1E5;
@@ -139,11 +143,11 @@ main {
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
-.enter-btn:hover {
+.exit-btn:hover {
   background: #DDE1E5;
   color: #0A0A0A;
 }
-
+  
 /* ------------------------------ */
 /* 펼쳐지는 영상 영역 : 썸네일 아래 */
 /* ------------------------------ */
@@ -172,8 +176,8 @@ main {
 
 .floor-video-panel-inner {
   width: 100%;
-  margin: 0 auto 80px auto;
-  position: relative;              /* EXIT 절대 위치 기준 */
+  margin: 0 auto 260px auto;   /* 아래 여백 증가 */
+  position: relative;
 }
 
 /* Vimeo 플레이어 크기 */
@@ -504,3 +508,4 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
+
