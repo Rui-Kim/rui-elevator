@@ -118,7 +118,7 @@ main {
 }
 
 .gallery img {
-  width: 150px;
+  width: 200px;
   cursor: pointer;
   border: 1px solid rgba(255,255,255,0.35);
 }
@@ -126,6 +126,11 @@ main {
   opacity: 0.7;
 }
 
+  .floor-media.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+  
 /* ENTER 버튼 (썸네일 밑 중앙) */
 .enter-btn {
   background: none;
@@ -157,7 +162,7 @@ main {
   margin: 0 auto 80px auto;
   clear: both;
 }
-
+  
 /* Vimeo 플레이어 크기 */
 .video-player {
   width: 100%;                   /* 80vw 전체 사용 */
@@ -459,6 +464,11 @@ document.querySelectorAll('.floor').forEach(floor => {
     floor.classList.add('open');
     exitBtn.style.display = 'inline-block';
 
+    enterBtn.addEventListener('click', () => {
+  floor.querySelector('.floor-media').classList.add('hidden');
+  ...
+});
+
     // 상영관 위치로 살짝 내려가기
     const rect = panel.getBoundingClientRect();
     const offset = window.scrollY + rect.top - (window.innerHeight * 0.1);
@@ -471,6 +481,11 @@ document.querySelectorAll('.floor').forEach(floor => {
     floor.classList.remove('open');
     exitBtn.style.display  = 'none';
 
+    exitBtn.addEventListener('click', () => {
+  floor.querySelector('.floor-media').classList.remove('hidden');
+  ...
+});
+    
     // 다시 층 상단으로
     const offset = floor.offsetTop;
     window.scrollTo({ top: offset, behavior: 'smooth' });
@@ -480,3 +495,4 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
+
