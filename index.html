@@ -365,28 +365,16 @@ main {
 </div>
 
 <script>
-/* 수동 부드러운 스크롤 (behavior: 'smooth' 대신 강제 애니메이션) */
+/* ---------------------------------------- */
+/* 부드러운 스크롤 */
+/* ---------------------------------------- */
 function smoothScrollTo(targetY) {
-  const startY = window.scrollY || window.pageYOffset;
-  const distance = targetY - startY;
-  const duration = 600; // ms
-  let startTime = null;
-
-  function step(timestamp) {
-    if (!startTime) startTime = timestamp;
-    const progress = Math.min((timestamp - startTime) / duration, 1);
-    // easeOutQuad
-    const ease = 1 - (1 - progress) * (1 - progress);
-    window.scrollTo(0, startY + distance * ease);
-    if (progress < 1) {
-      requestAnimationFrame(step);
-    }
-  }
-
-  requestAnimationFrame(step);
+  window.scrollTo({ top: targetY, behavior: 'smooth' });
 }
 
+/* ---------------------------------------- */
 /* 라이트박스 */
+/* ---------------------------------------- */
 function openLightbox(src) {
   document.getElementById('lightbox-img').src = src;
   document.getElementById('lightbox').style.display = 'flex';
@@ -395,21 +383,12 @@ function closeLightbox() {
   document.getElementById('lightbox').style.display = 'none';
 }
 
-/* 설계도 라인 애니메이션 */
+/* ---------------------------------------- */
+/* 라인 애니메이션: 층마다 다른 위치/폭 */
+/* ---------------------------------------- */
 const vline = document.getElementById("vline");
 const h1 = document.getElementById("hline1");
 const h2 = document.getElementById("hline2");
-
-/* 현재 층에 따라 엘리베이터 버튼 active */
-function updateElevatorActive(sectionId) {
-  document.querySelectorAll('.elevator button').forEach(btn => {
-    if (btn.dataset.target === `#${sectionId}`) {
-      btn.classList.add('active');
-    } else {
-      btn.classList.remove('active');
-    }
-  });
-}
 
 function updateLines() {
   const y = window.scrollY;
@@ -423,34 +402,37 @@ function updateLines() {
 
   if (!section) return;
 
-  updateElevatorActive(section.id);
-
   switch(section.id) {
     case "floor-0":
       vline.style.left = "900px";
       h1.style.top = "5vh";
       h2.style.top = "70vh";
       break;
+
     case "floor--1":
       vline.style.left = "120px";
       h1.style.top = "15vh";
       h2.style.top = "18vh";
       break;
+
     case "floor--2":
       vline.style.left = "300px";
       h1.style.top = "22vh";
       h2.style.top = "50vh";
       break;
+
     case "floor--3":
       vline.style.left = "480px";
       h1.style.top = "50vh";
       h2.style.top = "80vh";
       break;
+
     case "floor--4":
       vline.style.left = "620px";
       h1.style.top = "4vh";
       h2.style.top = "72vh";
       break;
+
     case "floor--5":
       vline.style.left = "800px";
       h1.style.top = "70vh";
@@ -462,52 +444,62 @@ function updateLines() {
 window.addEventListener('scroll', updateLines);
 updateLines();
 
+/* ---------------------------------------- */
 /* 엘리베이터 버튼 */
+/* ---------------------------------------- */
 document.querySelectorAll('.elevator button').forEach(btn => {
   btn.addEventListener('click', () => {
     const target = document.querySelector(btn.dataset.target);
-    if (!target) return;
     smoothScrollTo(target.offsetTop);
   });
 });
 
-/* ENTER / EXIT : 층 확장 / 접기 */
+/* ---------------------------------------- */
+/* ENTER / EXIT : 층 확장 / 접기 + 썸네일 숨기기 */
+/* ---------------------------------------- */
 document.querySelectorAll('.floor').forEach(floor => {
   const enterBtn = floor.querySelector('[data-enter]');
   const exitBtn  = floor.querySelector('[data-exit]');
   const panel    = floor.querySelector('.floor-video-panel');
+  const media    = floor.querySelector('.floor-media');
 
   if (!enterBtn || !exitBtn || !panel) return;
 
-  // ENTER: 영상 영역 펼치기
+  // ENTER: 영상 영역 펼치기 + 썸네일 숨기기
   enterBtn.addEventListener('click', () => {
+    if (media) media.classList.add('hidden');
+
     const fullHeight = panel.scrollHeight;
     panel.style.maxHeight = fullHeight + 'px';
 
     floor.classList.add('open');
     exitBtn.style.display = 'inline-block';
 
-    // 상영관 위치로 스크롤
+    // 상영관 위치로 살짝 내려가기
     const rect = panel.getBoundingClientRect();
     const offset = window.scrollY + rect.top - (window.innerHeight * 0.1);
-    smoothScrollTo(offset);
+    window.scrollTo({ top: offset, behavior: 'smooth' });
   });
 
-  // EXIT: 영상 영역 접기
+  // EXIT: 영상 영역 접기 + 썸네일 다시 보이기
   exitBtn.addEventListener('click', () => {
     panel.style.maxHeight = '0px';
     floor.classList.remove('open');
     exitBtn.style.display  = 'none';
 
+    if (media) media.classList.remove('hidden');
+
     // 다시 층 상단으로
     const offset = floor.offsetTop;
-    smoothScrollTo(offset);
+    window.scrollTo({ top: offset, behavior: 'smooth' });
   });
 });
 </script>
 
+
 </body>
 </html>
+
 
 
 
