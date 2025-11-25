@@ -103,12 +103,12 @@ main {
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  transition: transform 0.6s ease, opacity 0.6s ease;
+  transition: transform 0.6s ease; /* 위치만 부드럽게 */
 }
 
+/* 영상 펼쳐질 때: 썸네일이 살짝 위로 밀리기만 함 */
 .floor.open .floor-media {
-  transform: translateY(-40vh);    /* 위로 스르륵 밀리는 느낌 */
-  opacity: 0;
+  transform: translateY(-15vh);    /* -40vh → -15vh 로 줄여서 화면 안에 남게 */
 }
 
 /* 썸네일 갤러리 */
@@ -361,9 +361,25 @@ main {
 </div>
 
 <script>
-/* 부드러운 스크롤 */
+/* 수동 부드러운 스크롤 (behavior: 'smooth' 대신 강제 애니메이션) */
 function smoothScrollTo(targetY) {
-  window.scrollTo({ top: targetY, behavior: 'smooth' });
+  const startY = window.scrollY || window.pageYOffset;
+  const distance = targetY - startY;
+  const duration = 600; // ms
+  let startTime = null;
+
+  function step(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const progress = Math.min((timestamp - startTime) / duration, 1);
+    // easeOutQuad
+    const ease = 1 - (1 - progress) * (1 - progress);
+    window.scrollTo(0, startY + distance * ease);
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    }
+  }
+
+  requestAnimationFrame(step);
 }
 
 /* 라이트박스 */
@@ -380,6 +396,17 @@ const vline = document.getElementById("vline");
 const h1 = document.getElementById("hline1");
 const h2 = document.getElementById("hline2");
 
+/* 현재 층에 따라 엘리베이터 버튼 active */
+function updateElevatorActive(sectionId) {
+  document.querySelectorAll('.elevator button').forEach(btn => {
+    if (btn.dataset.target === `#${sectionId}`) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+}
+
 function updateLines() {
   const y = window.scrollY;
   const h = window.innerHeight;
@@ -391,6 +418,8 @@ function updateLines() {
   });
 
   if (!section) return;
+
+  updateElevatorActive(section.id);
 
   switch(section.id) {
     case "floor-0":
@@ -433,6 +462,7 @@ updateLines();
 document.querySelectorAll('.elevator button').forEach(btn => {
   btn.addEventListener('click', () => {
     const target = document.querySelector(btn.dataset.target);
+    if (!target) return;
     smoothScrollTo(target.offsetTop);
   });
 });
@@ -456,7 +486,7 @@ document.querySelectorAll('.floor').forEach(floor => {
     // 상영관 위치로 스크롤
     const rect = panel.getBoundingClientRect();
     const offset = window.scrollY + rect.top - (window.innerHeight * 0.1);
-    window.scrollTo({ top: offset, behavior: 'smooth' });
+    smoothScrollTo(offset);
   });
 
   // EXIT: 영상 영역 접기
@@ -467,7 +497,7 @@ document.querySelectorAll('.floor').forEach(floor => {
 
     // 다시 층 상단으로
     const offset = floor.offsetTop;
-    window.scrollTo({ top: offset, behavior: 'smooth' });
+    smoothScrollTo(offset);
   });
 });
 </script>
