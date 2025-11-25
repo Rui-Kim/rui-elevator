@@ -96,13 +96,21 @@ main {
 /* 썸네일 + ENTER (위쪽에 고정) */
 /* ------------------------------ */
 .floor-media {
+  margin: 22vh auto 0 auto;        /* 층 안에서 위쪽에 배치 */
+  width: 70vw;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   transition: transform 0.6s ease, opacity 0.6s ease;
 }
 
 .floor.open .floor-media {
-  transform: translateY(-40vh);
+  transform: translateY(-40vh);    /* 위로 스르륵 밀리는 느낌 */
   opacity: 0;
 }
+
 /* 썸네일 갤러리 */
 .gallery {
   display: flex;
@@ -137,13 +145,20 @@ main {
 }
 
 /* ------------------------------ */
-/* 펼쳐지는 영상 영역 : 썸네일 바로 아래 */
+/* 펼쳐지는 영상 영역 : 썸네일 아래 */
 /* ------------------------------ */
 .floor-video-panel {
   max-height: 0;
   overflow: hidden;
+
   opacity: 0;
   transform: translateY(30px);
+
+  margin: 40px auto 0 auto;       /* 썸네일 아래 간격 */
+  width: 80vw;
+  max-width: 1200px;
+  box-sizing: border-box;
+
   transition:
     max-height 0.8s cubic-bezier(0.25, 0.1, 0.25, 1),
     opacity 0.6s ease,
@@ -156,13 +171,15 @@ main {
 }
 
 .floor-video-panel-inner {
-  position: relative;
+  width: 100%;
+  margin: 0 auto 80px auto;
+  position: relative;              /* EXIT 절대 위치 기준 */
 }
 
 /* Vimeo 플레이어 크기 */
 .video-player {
   width: 100%;
-  height: calc(80vw * 0.56);  /* 16:9 */
+  height: calc(80vw * 0.56);       /* 16:9 */
   max-height: 80vh;
   display: block;
 }
@@ -172,6 +189,15 @@ main {
   position: absolute;
   right: 0;
   bottom: -40px;
+
+  background: none;
+  border: 1px solid rgba(255,255,255,0.5);
+  color: #DDE1E5;
+  font-size: 10px;
+  padding: 4px 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 .exit-btn:hover {
   background: #DDE1E5;
@@ -448,4 +474,3 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
-
