@@ -186,7 +186,6 @@ main {
 
 /* EXIT 버튼 : 영상 아래 오른쪽 */
 .exit-btn {
-  display: none;                   /* 처음엔 숨김 */
   position: absolute;
   right: 0;
   bottom: -40px;
@@ -376,17 +375,6 @@ function closeLightbox() {
   document.getElementById('lightbox').style.display = 'none';
 }
 
-/* 엘리베이터 active 업데이트 */
-function updateElevatorActive(sectionId) {
-  document.querySelectorAll('.elevator button').forEach(btn => {
-    if (btn.dataset.target === `#${sectionId}`) {
-      btn.classList.add('active');
-    } else {
-      btn.classList.remove('active');
-    }
-  });
-}
-
 /* 설계도 라인 애니메이션 */
 const vline = document.getElementById("vline");
 const h1 = document.getElementById("hline1");
@@ -436,9 +424,6 @@ function updateLines() {
       h2.style.top = "73vh";
       break;
   }
-
-  /* 현재 층에 맞게 엘리베이터 active 갱신 */
-  updateElevatorActive(section.id);
 }
 
 window.addEventListener('scroll', updateLines);
