@@ -447,27 +447,25 @@ document.querySelectorAll('.elevator button').forEach(btn => {
 });
 
 /* ---------------------------------------- */
-/* ENTER / EXIT : 층 확장 / 접기 */
+/* ENTER / EXIT : 층 확장 / 접기 + 썸네일 숨기기 */
 /* ---------------------------------------- */
 document.querySelectorAll('.floor').forEach(floor => {
   const enterBtn = floor.querySelector('[data-enter]');
   const exitBtn  = floor.querySelector('[data-exit]');
   const panel    = floor.querySelector('.floor-video-panel');
+  const media    = floor.querySelector('.floor-media');
 
   if (!enterBtn || !exitBtn || !panel) return;
 
-  // ENTER: 영상 영역 펼치기
+  // ENTER: 영상 영역 펼치기 + 썸네일 숨기기
   enterBtn.addEventListener('click', () => {
+    if (media) media.classList.add('hidden');
+
     const fullHeight = panel.scrollHeight;
     panel.style.maxHeight = fullHeight + 'px';
 
     floor.classList.add('open');
     exitBtn.style.display = 'inline-block';
-
-    enterBtn.addEventListener('click', () => {
-  floor.querySelector('.floor-media').classList.add('hidden');
-  ...
-});
 
     // 상영관 위치로 살짝 내려가기
     const rect = panel.getBoundingClientRect();
@@ -475,17 +473,14 @@ document.querySelectorAll('.floor').forEach(floor => {
     window.scrollTo({ top: offset, behavior: 'smooth' });
   });
 
-  // EXIT: 영상 영역 접기
+  // EXIT: 영상 영역 접기 + 썸네일 다시 보이기
   exitBtn.addEventListener('click', () => {
     panel.style.maxHeight = '0px';
     floor.classList.remove('open');
     exitBtn.style.display  = 'none';
 
-    exitBtn.addEventListener('click', () => {
-  floor.querySelector('.floor-media').classList.remove('hidden');
-  ...
-});
-    
+    if (media) media.classList.remove('hidden');
+
     // 다시 층 상단으로
     const offset = floor.offsetTop;
     window.scrollTo({ top: offset, behavior: 'smooth' });
@@ -493,6 +488,4 @@ document.querySelectorAll('.floor').forEach(floor => {
 });
 </script>
 
-</body>
-</html>
 
