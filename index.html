@@ -94,36 +94,31 @@ main {
   max-width: 760px;
 }
 
-/* 중앙 미디어 (썸네일 영역) */
+/* 중앙 미디어 : 스틸컷 + ENTER */
 .floor-media {
   position: absolute;
-  top: 50%;
+  top: 55%;                      /* 파란 박스 위치 느낌 (조금 아래) */
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 60vw;
-  max-width: 900px;
+  width: 70vw;                   /* 파란 박스 가로폭 */
+  max-width: 1100px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;        /* 위: 썸네일, 아래: ENTER */
+  align-items: center;
+  gap: 12px;
   z-index: 2;
 }
 
-.floor-media img,
-.floor-media video {
-  width: 100%;
-  height: auto;
-}
-
-/* ------------------------------ */
-/* 갤러리 (썸네일) */
-/* ------------------------------ */
+/* 썸네일 갤러리 */
 .gallery {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
 }
+
 .gallery img {
-  width: 140px;
+  width: 150px;
   cursor: pointer;
   border: 1px solid rgba(255,255,255,0.35);
 }
@@ -131,32 +126,50 @@ main {
   opacity: 0.7;
 }
 
-/* ------------------------------ */
-/* ENTER / EXIT 버튼 */
-/* ------------------------------ */
-.floor-controls {
-  margin-top: 8px;
-}
-
-.floor-controls button {
+/* ENTER 버튼 (썸네일 밑 중앙) */
+.enter-btn {
   background: none;
   border: 1px solid rgba(255,255,255,0.5);
   color: #DDE1E5;
   font-size: 10px;
-  padding: 4px 10px;
+  padding: 4px 12px;
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
-.floor-controls button:hover {
+.enter-btn:hover {
   background: #DDE1E5;
   color: #0A0A0A;
 }
 
-/* 영상 패널 안의 EXIT 버튼 */
+/* 펼쳐지는 영상 영역 */
+.floor-video-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.6s ease;
+  margin-top: 40vh;              /* 썸네일 층에서 '한 층 내려간' 느낌 */
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.floor-video-panel-inner {
+  max-width: 80vw;               /* 초록 박스 가로 폭 */
+  margin: 0 auto 80px auto;
+  clear: both;
+}
+
+/* Vimeo 플레이어 크기 */
+.video-player {
+  width: 100%;                   /* 80vw 전체 사용 */
+  height: calc(80vw * 0.56);     /* 16:9 비율 */
+  max-height: 80vh;              /* 너무 세로로 길어지지 않게 */
+  display: block;
+}
+
+/* EXIT 버튼 : 영상 오른쪽 아래 */
 .exit-btn {
-  margin-top: 8px;
-  float: right;
+  display: block;
+  margin: 8px 0 0 auto;          /* 오른쪽 아래 정렬 */
   background: none;
   border: 1px solid rgba(255,255,255,0.5);
   color: #DDE1E5;
@@ -169,31 +182,6 @@ main {
 .exit-btn:hover {
   background: #DDE1E5;
   color: #0A0A0A;
-}
-
-/* ------------------------------ */
-/* 펼쳐지는 영상 영역 */
-/* ------------------------------ */
-.floor-video-panel {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.6s ease;
-  margin-top: 100vh; /* 썸네일 아래로 '한 층 더 내려가는' 느낌 */
-  padding: 0 24px;
-  box-sizing: border-box;
-}
-
-.floor-video-panel-inner {
-  max-width: 900px;
-  margin: 0 auto 80px auto;
-  clear: both; /* EXIT 버튼 float 정리 */
-}
-
-.floor-video-panel iframe,
-.floor-video-panel video {
-  width: 100%;
-  height: auto;
-  display: block;
 }
 
 /* ------------------------------ */
@@ -286,38 +274,36 @@ main {
 <!-- -1층 : Darkryscope -->
 <section class="floor" id="floor--1">
 
-  <!-- 가운데 썸네일 -->
+  <!-- 가운데 썸네일 + ENTER -->
   <div class="floor-media">
     <div class="gallery">
       <img src="media/dacry_still_001.jpg" onclick="openLightbox(this.src)" alt="Darkryscope still 1">
       <img src="media/dacryscope_still(2).jpg" onclick="openLightbox(this.src)" alt="Darkryscope still 2">
       <img src="media/dacryscope_still(3).jpg" onclick="openLightbox(this.src)" alt="Darkryscope still 3">
     </div>
+
+    <button type="button" class="enter-btn" data-enter>ENTER</button>
   </div>
 
-  <!-- 층 설명 + ENTER -->
+  <!-- 층 설명 -->
   <div class="floor-inner">
     <h2>다크라이스코프 실험</h2>
     <p>다크라이스코프는 눈물과 시야의 신체성을 복원하기 위한...</p>
-
-    <div class="floor-controls">
-      <button type="button" data-enter>ENTER</button>
-    </div>
   </div>
 
-  <!-- 펼쳐지는 상영관 영역 (Vimeo 예시) -->
-<div class="floor-video-panel">
-  <div class="floor-video-panel-inner">
+  <!-- 펼쳐지는 상영관 영역 (Vimeo) -->
+  <div class="floor-video-panel">
+    <div class="floor-video-panel-inner">
 
-    <iframe 
-      src="https://player.vimeo.com/video/1077242763?h=8fc5041d99&title=0&byline=0&portrait=0" 
-      width="1920" height="1080" 
-      frameborder="0"
-      allow="autoplay; fullscreen; picture-in-picture"
-      allowfullscreen>
-    </iframe>
+      <iframe 
+        src="https://player.vimeo.com/video/1077242763?h=8fc5041d99&title=0&byline=0&portrait=0" 
+        class="video-player"
+        frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowfullscreen>
+      </iframe>
 
-    <button type="button" class="exit-btn" data-exit>EXIT</button>
+      <button type="button" class="exit-btn" data-exit>EXIT</button>
     </div>
   </div>
 </section>
@@ -327,7 +313,7 @@ main {
   <div class="floor-inner">
     <h2>Home / Memory</h2>
     <p>17살의 집, 돌아갈 수 없는 공간, 기다림...</p>
-    <!-- 여기도 나중에 썸네일 + ENTER / VIDEO 패널 복붙해서 채우면 됨 -->
+    <!-- 나중에 여기도 썸네일 + ENTER / VIDEO 패널 복붙해서 채우면 됨 -->
   </div>
 </section>
 
@@ -494,7 +480,3 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
-
-
-
-
