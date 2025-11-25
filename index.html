@@ -174,6 +174,7 @@ main {
   width: 100%;
   margin: 0 auto 260px auto;   /* 아래 여백 증가 */
   position: relative;
+   padding-bottom: 60px; 
 }
 
 /* Vimeo 플레이어 크기 */
@@ -184,15 +185,15 @@ main {
   display: block;
 }
 
-/* EXIT 버튼 : 
+/* EXIT 버튼 */
 .exit-btn {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: -50px;
+  bottom: 10px;
 
-  background: transparent;  
-  border: 1px solid rgba(255,255,255,0.5);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.25); /* ← ENTER와 통일되게 낮춤 */
   color: #DDE1E5;
   font-size: 10px;
   padding: 4px 12px;
@@ -203,10 +204,9 @@ main {
 }
 
 .exit-btn:hover {
-  background: rgba(255,255,255,0.15); /* ENTER와 동일하게 매우 은은하게 */
-  color:  #0A0A0A;
+  background: rgba(255,255,255,0.08); /* ← ENTER hover와 동일한 정도 */
+  color: #DDE1E5;
 }
-
 
 /* ------------------------------ */
 /* 라이트박스 */
@@ -508,6 +508,7 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
+
 
 
 
