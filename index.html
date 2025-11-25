@@ -92,9 +92,11 @@ main {
   max-width: 760px;
 }
 
-/* 중앙 미디어 : 스틸컷 + ENTER (흐름 레이아웃) */
+/* ------------------------------ */
+/* 썸네일 + ENTER (위쪽에 고정) */
+/* ------------------------------ */
 .floor-media {
-  margin: 22vh auto 0 auto;    /* 화면 위에서 조금 내려온 위치 */
+  margin: 22vh auto 0 auto;   /* 층 안에서 위쪽에 위치 */
   width: 70vw;
   max-width: 1100px;
   display: flex;
@@ -136,7 +138,9 @@ main {
   color: #0A0A0A;
 }
 
+/* ------------------------------ */
 /* 펼쳐지는 영상 영역 : 썸네일 바로 아래 */
+/* ------------------------------ */
 .floor-video-panel {
   max-height: 0;
   overflow: hidden;
@@ -427,7 +431,7 @@ document.querySelectorAll('.floor').forEach(floor => {
     floor.classList.add('open');
     exitBtn.style.display = 'inline-block';
 
-    // 상영관 위치로 살짝 스크롤
+    // 상영관 위치로 스크롤
     const rect = panel.getBoundingClientRect();
     const offset = window.scrollY + rect.top - (window.innerHeight * 0.1);
     window.scrollTo({ top: offset, behavior: 'smooth' });
