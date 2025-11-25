@@ -129,12 +129,8 @@ main {
 }
 
 /* ENTER 버튼 (썸네일 밑 중앙) */
-.exit-btn {
-  position: absolute;
-  left: 50%;
-  bottom: -60px;       /* 영상 아래 공백 증가 */
-  transform: translateX(-50%);  /* 가운데 정렬 */
-  background: none;
+.enter-btn {
+  background: transparent !important;
   border: 1px solid rgba(255,255,255,0.5);
   color: #DDE1E5;
   font-size: 10px;
@@ -144,7 +140,7 @@ main {
   letter-spacing: 0.08em;
 }
 .exit-btn:hover {
-  background: #DDE1E5;
+  background: rgba(255,255,255,0.15); /* 아주 은은한 hover */
   color: #0A0A0A;
 }
   
@@ -188,23 +184,25 @@ main {
   display: block;
 }
 
-/* EXIT 버튼 : 영상 아래 오른쪽 */
+/* EXIT 버튼 : 
 .exit-btn {
   position: absolute;
-  right: 0;
-  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
 
-  background: none;
+  bottom: -50px; /* 영상과의 간격 */
+  background: transparent;
   border: 1px solid rgba(255,255,255,0.5);
   color: #DDE1E5;
+  padding: 4px 14px;
   font-size: 10px;
-  padding: 4px 10px;
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  width: auto;         /* 🔥 핵심 */
 }
 .exit-btn:hover {
-  background: #DDE1E5;
+  background: rgba(255,255,255,0.15);
   color: #0A0A0A;
 }
 
@@ -508,4 +506,5 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
+
 
