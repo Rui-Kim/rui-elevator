@@ -19,7 +19,7 @@ body {
   background: #0A0A0A;
   color: #DDE1E5;
   overflow-x: hidden;
-  font-size: 10px;  /* 전체 기본 텍스트 */
+  font-size: 10px;
 }
 
 h1, h2, h3 {
@@ -70,9 +70,7 @@ a:hover {
   font-weight: 600;
 }
 
-/* ------------------------------ */
 /* 층 구조 */
-/* ------------------------------ */
 main {
   margin-left: 80px;
 }
@@ -81,10 +79,10 @@ main {
   position: relative;
   min-height: 100vh;
   padding: 40px 24px 120px;
-  z-index: 2; /* 텍스트 가장 위 */
+  z-index: 2;
 }
 
-/* 텍스트 박스 */
+/* 층 텍스트 */
 .floor-inner {
   background: transparent;
   border: none;
@@ -94,19 +92,15 @@ main {
   max-width: 760px;
 }
 
-/* 중앙 미디어 : 스틸컷 + ENTER */
+/* 중앙 미디어 : 스틸컷 + ENTER (흐름 레이아웃) */
 .floor-media {
-  position: absolute;
-  top: 55%;                      /* 파란 박스 위치 느낌 (조금 아래) */
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 70vw;                   /* 파란 박스 가로폭 */
+  margin: 22vh auto 0 auto;    /* 화면 위에서 조금 내려온 위치 */
+  width: 70vw;
   max-width: 1100px;
   display: flex;
-  flex-direction: column;        /* 위: 썸네일, 아래: ENTER */
+  flex-direction: column;
   align-items: center;
   gap: 12px;
-  z-index: 2;
 }
 
 /* 썸네일 갤러리 */
@@ -126,11 +120,6 @@ main {
   opacity: 0.7;
 }
 
-  .floor-media.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-  
 /* ENTER 버튼 (썸네일 밑 중앙) */
 .enter-btn {
   background: none;
@@ -147,34 +136,34 @@ main {
   color: #0A0A0A;
 }
 
-/* 펼쳐지는 영상 영역 */
+/* 펼쳐지는 영상 영역 : 썸네일 바로 아래 */
 .floor-video-panel {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.6s ease;
-  margin-top: 40vh;              /* 썸네일 층에서 '한 층 내려간' 느낌 */
-  padding: 0 24px;
+  margin: 40px auto 0 auto;   /* 썸네일 아래 간격 */
+  width: 80vw;
+  max-width: 1200px;
   box-sizing: border-box;
 }
 
 .floor-video-panel-inner {
-  max-width: 80vw;               /* 초록 박스 가로 폭 */
+  width: 100%;
   margin: 0 auto 80px auto;
-  clear: both;
 }
-  
+
 /* Vimeo 플레이어 크기 */
 .video-player {
-  width: 100%;                   /* 80vw 전체 사용 */
-  height: calc(80vw * 0.56);     /* 16:9 비율 */
-  max-height: 80vh;              /* 너무 세로로 길어지지 않게 */
+  width: 100%;
+  height: calc(80vw * 0.56);  /* 16:9 */
+  max-height: 80vh;
   display: block;
 }
 
-/* EXIT 버튼 : 영상 오른쪽 아래 */
+/* EXIT 버튼 : 영상 아래 오른쪽 */
 .exit-btn {
   display: block;
-  margin: 8px 0 0 auto;          /* 오른쪽 아래 정렬 */
+  margin: 8px 0 0 auto;
   background: none;
   border: 1px solid rgba(255,255,255,0.5);
   color: #DDE1E5;
@@ -234,16 +223,14 @@ main {
 /* ------------------------------ */
 @media (max-width: 768px) {
   main { margin-left: 60px; }
-  .floor-media { width: 80vw; }
-  .floor-video-panel { margin-top: 80vh; }
+  .floor-media { width: 80vw; margin-top: 18vh; }
+  .floor-video-panel { width: 90vw; }
 }
 </style>
 </head>
 <body>
 
-<!-- ======================================================= -->
 <!-- 엘리베이터 -->
-<!-- ======================================================= -->
 <aside class="elevator">
   <button data-target="#floor-0">0</button>
   <button data-target="#floor--1">-1</button>
@@ -253,16 +240,11 @@ main {
   <button data-target="#floor--5">-5</button>
 </aside>
 
-<!-- ======================================================= -->
-<!-- 선(라인) 3개: 세로 1 / 가로 2 -->
-<!-- ======================================================= -->
+<!-- 설계도 선 -->
 <div class="line-vertical" id="vline"></div>
 <div class="line-horizontal" id="hline1"></div>
 <div class="line-horizontal" id="hline2" style="top: 70vh;"></div>
 
-<!-- ======================================================= -->
-<!-- MAIN -->
-<!-- ======================================================= -->
 <main>
 
 <!-- 0층 -->
@@ -279,7 +261,13 @@ main {
 <!-- -1층 : Darkryscope -->
 <section class="floor" id="floor--1">
 
-  <!-- 가운데 썸네일 + ENTER -->
+  <!-- 층 설명 -->
+  <div class="floor-inner">
+    <h2>다크라이스코프 실험</h2>
+    <p>다크라이스코프는 눈물과 시야의 신체성을 복원하기 위한...</p>
+  </div>
+
+  <!-- 썸네일 + ENTER -->
   <div class="floor-media">
     <div class="gallery">
       <img src="media/dacry_still_001.jpg" onclick="openLightbox(this.src)" alt="Darkryscope still 1">
@@ -290,18 +278,11 @@ main {
     <button type="button" class="enter-btn" data-enter>ENTER</button>
   </div>
 
-  <!-- 층 설명 -->
-  <div class="floor-inner">
-    <h2>다크라이스코프 실험</h2>
-    <p>다크라이스코프는 눈물과 시야의 신체성을 복원하기 위한...</p>
-  </div>
-
-  <!-- 펼쳐지는 상영관 영역 (Vimeo) -->
+  <!-- 펼쳐지는 상영관 -->
   <div class="floor-video-panel">
     <div class="floor-video-panel-inner">
-
-      <iframe 
-        src="https://player.vimeo.com/video/1077242763?h=8fc5041d99&title=0&byline=0&portrait=0" 
+      <iframe
+        src="https://player.vimeo.com/video/1077242763?h=8fc5041d99&title=0&byline=0&portrait=0"
         class="video-player"
         frameborder="0"
         allow="autoplay; fullscreen; picture-in-picture"
@@ -318,7 +299,6 @@ main {
   <div class="floor-inner">
     <h2>Home / Memory</h2>
     <p>17살의 집, 돌아갈 수 없는 공간, 기다림...</p>
-    <!-- 나중에 여기도 썸네일 + ENTER / VIDEO 패널 복붙해서 채우면 됨 -->
   </div>
 </section>
 
@@ -349,24 +329,18 @@ main {
 
 </main>
 
-<!-- ======================================================= -->
 <!-- 라이트박스 -->
-<!-- ======================================================= -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <img id="lightbox-img">
 </div>
 
 <script>
-/* ---------------------------------------- */
 /* 부드러운 스크롤 */
-/* ---------------------------------------- */
 function smoothScrollTo(targetY) {
   window.scrollTo({ top: targetY, behavior: 'smooth' });
 }
 
-/* ---------------------------------------- */
 /* 라이트박스 */
-/* ---------------------------------------- */
 function openLightbox(src) {
   document.getElementById('lightbox-img').src = src;
   document.getElementById('lightbox').style.display = 'flex';
@@ -375,9 +349,7 @@ function closeLightbox() {
   document.getElementById('lightbox').style.display = 'none';
 }
 
-/* ---------------------------------------- */
-/* 라인 애니메이션: 층마다 다른 위치/폭 */
-/* ---------------------------------------- */
+/* 설계도 라인 애니메이션 */
 const vline = document.getElementById("vline");
 const h1 = document.getElementById("hline1");
 const h2 = document.getElementById("hline2");
@@ -400,31 +372,26 @@ function updateLines() {
       h1.style.top = "5vh";
       h2.style.top = "70vh";
       break;
-
     case "floor--1":
       vline.style.left = "120px";
       h1.style.top = "15vh";
       h2.style.top = "18vh";
       break;
-
     case "floor--2":
       vline.style.left = "300px";
       h1.style.top = "22vh";
       h2.style.top = "50vh";
       break;
-
     case "floor--3":
       vline.style.left = "480px";
       h1.style.top = "50vh";
       h2.style.top = "80vh";
       break;
-
     case "floor--4":
       vline.style.left = "620px";
       h1.style.top = "4vh";
       h2.style.top = "72vh";
       break;
-
     case "floor--5":
       vline.style.left = "800px";
       h1.style.top = "70vh";
@@ -436,9 +403,7 @@ function updateLines() {
 window.addEventListener('scroll', updateLines);
 updateLines();
 
-/* ---------------------------------------- */
 /* 엘리베이터 버튼 */
-/* ---------------------------------------- */
 document.querySelectorAll('.elevator button').forEach(btn => {
   btn.addEventListener('click', () => {
     const target = document.querySelector(btn.dataset.target);
@@ -446,40 +411,33 @@ document.querySelectorAll('.elevator button').forEach(btn => {
   });
 });
 
-/* ---------------------------------------- */
-/* ENTER / EXIT : 층 확장 / 접기 + 썸네일 숨기기 */
-/* ---------------------------------------- */
+/* ENTER / EXIT : 층 확장 / 접기 */
 document.querySelectorAll('.floor').forEach(floor => {
   const enterBtn = floor.querySelector('[data-enter]');
   const exitBtn  = floor.querySelector('[data-exit]');
   const panel    = floor.querySelector('.floor-video-panel');
-  const media    = floor.querySelector('.floor-media');
 
   if (!enterBtn || !exitBtn || !panel) return;
 
-  // ENTER: 영상 영역 펼치기 + 썸네일 숨기기
+  // ENTER: 영상 영역 펼치기
   enterBtn.addEventListener('click', () => {
-    if (media) media.classList.add('hidden');
-
     const fullHeight = panel.scrollHeight;
     panel.style.maxHeight = fullHeight + 'px';
 
     floor.classList.add('open');
     exitBtn.style.display = 'inline-block';
 
-    // 상영관 위치로 살짝 내려가기
+    // 상영관 위치로 살짝 스크롤
     const rect = panel.getBoundingClientRect();
     const offset = window.scrollY + rect.top - (window.innerHeight * 0.1);
     window.scrollTo({ top: offset, behavior: 'smooth' });
   });
 
-  // EXIT: 영상 영역 접기 + 썸네일 다시 보이기
+  // EXIT: 영상 영역 접기
   exitBtn.addEventListener('click', () => {
     panel.style.maxHeight = '0px';
     floor.classList.remove('open');
     exitBtn.style.display  = 'none';
-
-    if (media) media.classList.remove('hidden');
 
     // 다시 층 상단으로
     const offset = floor.offsetTop;
@@ -488,4 +446,5 @@ document.querySelectorAll('.floor').forEach(floor => {
 });
 </script>
 
-
+</body>
+</html>
