@@ -157,7 +157,7 @@ main {
   opacity: 0;
   transform: translateY(30px);
 
-  margin: 120px auto 0 auto;       /* 썸네일 아래 간격 */
+  margin: 220px auto 0 auto;       /* 썸네일 아래 간격 */
   width: 80vw;
   max-width: 1200px;
   box-sizing: border-box;
@@ -296,8 +296,15 @@ main {
 
   <!-- 층 설명 -->
   <div class="floor-inner">
-    <h2>다크라이스코프 실험</h2>
-    <p>다크라이스코프는 눈물과 시야의 신체성을 복원하기 위한...</p>
+    <h2>다크라이스코프 실험(Dacryscope Lab)</h2>
+    <p>단채널 영상. 12분 20초. 2025.ver.</p>
+     <div> </div>
+    <p>다크라이스코프(Dacryscope)는 눈물 또는 눈물샘과의 관계를 나타내는</p>
+    <p>접두어 'Dacry-'와 보는 기계를 뜻하는 '-scope'를 합성한 단어로</p>
+    <p>3D 가상 환경 속에서 시야의 신체성을 복원하기 위해 작가가 개발한 모델의 이름이다.</p>
+    <p>작가는 렌즈 기반 화면에서 제거되는 실제 시야의 신체적 요소와 정서적영향을 시각적 비체로 명명하고,</p> 
+    <p>눈 깜빡임, 눈물, 시력 저하와 교정, 정서에 따른 눈의 심도 등을 연구하여</p>
+    <p>순간적인 암전과 눈물에 따른 왜곡이 생기는 가상 카메라를 만든다.</p>
   </div>
 
   <!-- 썸네일 + ENTER -->
@@ -330,8 +337,40 @@ main {
 <!-- -2층 -->
 <section class="floor" id="floor--2">
   <div class="floor-inner">
-    <h2>Home / Memory</h2>
-    <p>17살의 집, 돌아갈 수 없는 공간, 기다림...</p>
+    <h2><Pyknolepsy(seizures)></h2>
+    <p>단채널 영상. 15분 30초. 2025.</p>
+     <div> </div>
+    <p>1인칭의 눈을 통해 한 사람의 과거로 간다.</p>
+    <p>영상은 눈의 깜빡임을 따라 간헐적으로 화면을 채우는 시지각의 미세한 결함들을 몽타주로 환원시킨다.</p>
+    <p>일상적 풍경과 시야의 균열에서 영화-기계적 아름다움을 발견하고자 한다.</p>
+  </div>
+   <!-- 썸네일 + ENTER -->
+  <div class="floor-media">
+    <div class="gallery">
+      <img src="media/Picnolepsie_1.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 1">
+      <img src="media/Picnolepsie_2.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 2">
+      <img src="media/Picnolepsie_3.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 3">
+      <img src="media/Picnolepsie_4.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 3">
+      <img src="media/Picnolepsie_5.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 3">
+      <img src="media/Picnolepsie_6.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 3">
+    </div>
+
+    <button type="button" class="enter-btn" data-enter>ENTER</button>
+  </div>
+
+  <!-- 펼쳐지는 상영관 -->
+  <div class="floor-video-panel">
+    <div class="floor-video-panel-inner">
+      <iframe
+        src="https://player.vimeo.com/video/1073523043?h=fece7a80af&badge=0&autopause=0&player_id=0"
+        class="video-player"
+        frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+
+      <button type="button" class="exit-btn" data-exit>EXIT</button>
+    </div>
   </div>
 </section>
 
@@ -521,6 +560,7 @@ exitBtn.addEventListener('click', () => {
 
 </body>
 </html>
+
 
 
 
