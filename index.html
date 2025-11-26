@@ -351,7 +351,7 @@ main {
       <img src="media/Picnolepsie_2.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 2">
       <img src="media/Picnolepsie_3.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 3">
       <img src="media/Picnolepsie_4.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 3">
-      <img src="media/Picnolepsie_5.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 3">
+      <img src="media/Picnolepsie_5.jpeg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 3">
       <img src="media/Picnolepsie_6.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 3">
     </div>
 
@@ -529,10 +529,11 @@ document.querySelectorAll('.floor').forEach(floor => {
     floor.classList.add('open');
     exitBtn.style.display = 'inline-block';
 
-    // 상영관 위치로 스크롤
-    const rect = panel.getBoundingClientRect();
-    const offset = window.scrollY + rect.top - (window.innerHeight * 0.1);
-    smoothScrollTo(offset);
+// 상영관 위치로 스크롤
+  const rect = panel.getBoundingClientRect();
+  const offset = window.scrollY + rect.top - (window.innerHeight * 0.35);
+  smoothScrollTo(offset);
+
   });
 
 // EXIT: 영상 영역 접기 + Vimeo 정지
@@ -560,6 +561,7 @@ exitBtn.addEventListener('click', () => {
 
 </body>
 </html>
+
 
 
 
