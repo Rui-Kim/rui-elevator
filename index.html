@@ -41,7 +41,7 @@ a:hover {
 }
 
 /* ------------------------------ */
-/* 레이아웃 (PC 기준) */
+/* 레이아웃 */
 /* ------------------------------ */
 
 /* 엘리베이터 버튼 */
@@ -90,14 +90,16 @@ main {
   position: relative;
   z-index: 3;
   max-width: 760px;
-  margin-bottom: 80px;   /* 텍스트와 썸네일 사이 여백 */
+
+  margin-bottom: 80px;   /* 🔥 텍스트와 썸네일 사이 여백 */
 }
 
+
 /* ------------------------------ */
-/* 썸네일 + ENTER */
+/* 썸네일 + ENTER (위쪽에 고정) */
 /* ------------------------------ */
 .floor-media {
-  margin: 28vh auto 40px auto;
+  margin: 28vh auto 40px auto;   /* ← 40 → 40px 로 변경 */
   width: 70vw;
   max-width: 1100px;
   display: flex;
@@ -107,9 +109,9 @@ main {
   transition: transform 0.6s ease;
 }
 
-/* 영상 펼쳐질 때: 썸네일이 살짝 위로 밀림 */
+/* 영상 펼쳐질 때: 썸네일이 살짝 위로 밀리기만 함 */
 .floor.open .floor-media {
-  transform: translateY(-15vh);
+  transform: translateY(-15vh);    /* -40vh → -15vh 로 줄여서 화면 안에 남게 */
 }
 
 /* 썸네일 갤러리 */
@@ -129,7 +131,7 @@ main {
   opacity: 0.7;
 }
 
-/* ENTER 버튼 */
+/* ENTER 버튼 (썸네일 밑 중앙) */
 .enter-btn {
   background: transparent !important;
   border: 1px solid rgba(255,255,255,0.5);
@@ -141,12 +143,12 @@ main {
   letter-spacing: 0.08em;
 }
 .enter-btn:hover {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.15); /* 아주 은은한 hover */
   color: #0A0A0A;
 }
   
 /* ------------------------------ */
-/* 펼쳐지는 영상 영역 */
+/* 펼쳐지는 영상 영역 : 썸네일 아래 */
 /* ------------------------------ */
 .floor-video-panel {
   max-height: 0;
@@ -194,7 +196,7 @@ main {
   bottom: -80px;
 
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.25);
+  border: 1px solid rgba(255,255,255,0.25); /* ← ENTER와 통일되게 낮춤 */
   color: #DDE1E5;
   font-size: 10px;
   padding: 4px 12px;
@@ -205,7 +207,7 @@ main {
 }
 
 .exit-btn:hover {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.08); /* ← ENTER hover와 동일한 정도 */
   color: #DDE1E5;
 }
 
@@ -249,15 +251,15 @@ main {
   transition: all 1s ease;
 }
 
-/* -------------------------------------------------- */
-/*                📱 모바일 레이아웃                  */
-/* -------------------------------------------------- */
+  /* ------------------------------ */
+/* 📱 모바일 레이아웃 */
+/* ------------------------------ */
 @media (max-width: 768px) {
   body {
     font-size: 11px;
   }
 
-  /* 엘리베이터: 아래 가로바 */
+  /* 엘리베이터: 아래 가로바로 이동 */
   .elevator {
     left: 50%;
     top: auto;
@@ -303,7 +305,7 @@ main {
   }
 
   .gallery img {
-    width: calc(50% - 6px);   /* 2열 그리드 느낌 */
+    width: calc(50% - 6px);   /* 2열 그리드 */
   }
 
   .floor-video-panel {
@@ -325,16 +327,14 @@ main {
     bottom: -60px;
   }
 
-  /* 배경 선들은 조금만 존재감 있게 */
+  /* 배경 선들: 살짝만 보이게 */
   .line-vertical,
   .line-horizontal {
     opacity: 0.18;
   }
 }
 
-/* -------------------------------------------------- */
-/*                아주 작은 화면(폰)                  */
-/* -------------------------------------------------- */
+/* 아주 작은 화면 (폰 더 작은 사이즈) */
 @media (max-width: 480px) {
   body {
     font-size: 11px;
@@ -349,7 +349,7 @@ main {
   }
 
   .gallery img {
-    width: 100%;   /* 한 줄에 1개씩 */
+    width: 100%;   /* 한 줄에 1개 */
   }
 
   .elevator {
@@ -358,6 +358,8 @@ main {
     gap: 6px;
   }
 }
+
+
 </style>
 </head>
 <body>
@@ -392,6 +394,8 @@ main {
 
 <!-- -1층 : Darkryscope -->
 <section class="floor" id="floor--1">
+
+  <!-- 층 설명 -->
   <div class="floor-inner">
     <h2>다크라이스코프 실험(Dacryscope Lab)</h2>
     <p>단채널 영상. 12분 20초. 2025.ver.</p>
@@ -404,15 +408,18 @@ main {
     <p>순간적인 암전과 눈물에 따른 왜곡이 생기는 가상 카메라를 만든다.</p>
   </div>
 
+  <!-- 썸네일 + ENTER -->
   <div class="floor-media">
     <div class="gallery">
       <img src="media/dacry_still_001.jpg" onclick="openLightbox(this.src)" alt="Darkryscope still 1">
       <img src="media/dacryscope_still(2).jpg" onclick="openLightbox(this.src)" alt="Darkryscope still 2">
       <img src="media/dacryscope_still(3).jpg" onclick="openLightbox(this.src)" alt="Darkryscope still 3">
     </div>
+
     <button type="button" class="enter-btn" data-enter>ENTER</button>
   </div>
 
+  <!-- 펼쳐지는 상영관 -->
   <div class="floor-video-panel">
     <div class="floor-video-panel-inner">
       <iframe
@@ -422,6 +429,7 @@ main {
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen>
       </iframe>
+
       <button type="button" class="exit-btn" data-exit>EXIT</button>
     </div>
   </div>
@@ -437,16 +445,18 @@ main {
     <p>프루킨예 나무현상, 비문증, 안내섬광 등의 내시현상을 연출한다.</p>
     <p>각막과 망막 사이 시야를 방해하는 증상들이 화면의 빛과 어둠을 결정한다.</p>
   </div>
-
+    <!-- 썸네일 + ENTER -->
   <div class="floor-media">
     <div class="gallery">
       <img src="media/2 .jpg" onclick="openLightbox(this.src)" alt="Hall still 1">
       <img src="media/3 .jpg" onclick="openLightbox(this.src)" alt="Hall still 2">
       <img src="media/4 .jpg" onclick="openLightbox(this.src)" alt="Hall still 3">
     </div>
+
     <button type="button" class="enter-btn" data-enter>ENTER</button>
   </div>
 
+  <!-- 펼쳐지는 상영관 -->
   <div class="floor-video-panel">
     <div class="floor-video-panel-inner">
       <iframe
@@ -456,11 +466,12 @@ main {
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen>
       </iframe>
+
       <button type="button" class="exit-btn" data-exit>EXIT</button>
     </div>
   </div>
 </section>
-
+  
 <!-- -3층 -->
 <section class="floor" id="floor--3">
   <div class="floor-inner">
@@ -471,7 +482,7 @@ main {
     <p>영상은 눈의 깜빡임을 따라 간헐적으로 화면을 채우는 시지각의 미세한 결함들을 몽타주로 환원시킨다.</p>
     <p>일상적 풍경과 시야의 균열에서 영화-기계적 아름다움을 발견하고자 한다.</p>
   </div>
-
+   <!-- 썸네일 + ENTER -->
   <div class="floor-media">
     <div class="gallery">
       <img src="media/Picnolepsie_1.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 1">
@@ -481,9 +492,11 @@ main {
       <img src="media/Picnolepsie_3.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 5">
       <img src="media/pyknolepsy_7.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 6">
     </div>
+
     <button type="button" class="enter-btn" data-enter>ENTER</button>
   </div>
 
+  <!-- 펼쳐지는 상영관 -->
   <div class="floor-video-panel">
     <div class="floor-video-panel-inner">
       <iframe
@@ -493,10 +506,13 @@ main {
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen>
       </iframe>
+
       <button type="button" class="exit-btn" data-exit>EXIT</button>
     </div>
   </div>
 </section>
+
+
 
 <!-- -4층 -->
 <section class="floor" id="floor--4">
@@ -523,19 +539,22 @@ main {
 </div>
 
 <script>
-/* 수동 부드러운 스크롤 */
+/* 수동 부드러운 스크롤 (behavior: 'smooth' 대신 강제 애니메이션) */
 function smoothScrollTo(targetY) {
   const startY = window.scrollY || window.pageYOffset;
   const distance = targetY - startY;
-  const duration = 600;
+  const duration = 600; // ms
   let startTime = null;
 
   function step(timestamp) {
     if (!startTime) startTime = timestamp;
     const progress = Math.min((timestamp - startTime) / duration, 1);
+    // easeOutQuad
     const ease = 1 - (1 - progress) * (1 - progress);
     window.scrollTo(0, startY + distance * ease);
-    if (progress < 1) requestAnimationFrame(step);
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    }
   }
 
   requestAnimationFrame(step);
@@ -614,7 +633,7 @@ function updateLines() {
   }
 }
 
-/* 공통: 층 닫기 */
+  // 🔧 열려 있는 층(영상) 닫는 공통 함수
 function closeFloor(floor) {
   if (!floor.classList.contains('open')) return;
 
@@ -622,10 +641,12 @@ function closeFloor(floor) {
   const exitBtn = floor.querySelector('[data-exit]');
   const iframe  = floor.querySelector('iframe');
 
+  // 1) 비디오 패널 접기
   if (panel) panel.style.maxHeight = '0px';
   floor.classList.remove('open');
   if (exitBtn) exitBtn.style.display = 'none';
 
+  // 2) Vimeo 영상 정지
   if (iframe && iframe.contentWindow) {
     iframe.contentWindow.postMessage(
       JSON.stringify({ method: 'pause' }),
@@ -634,7 +655,7 @@ function closeFloor(floor) {
   }
 }
 
-/* 현재 층 제외 모두 닫기 */
+// 🔧 현재 층(floor)을 제외하고 전부 닫기
 function closeAllOtherFloors(currentFloor) {
   document.querySelectorAll('.floor').forEach(f => {
     if (!currentFloor || f !== currentFloor) {
@@ -643,6 +664,7 @@ function closeAllOtherFloors(currentFloor) {
   });
 }
 
+  
 window.addEventListener('scroll', updateLines);
 updateLines();
 
@@ -652,18 +674,26 @@ document.querySelectorAll('.elevator button').forEach(btn => {
     const target = document.querySelector(btn.dataset.target);
     if (!target) return;
 
-    // 1) 열려 있는 영상들 먼저 닫기
+    // 1) 현재 열려 있는 모든 층(영상) 닫기 + 정지
     closeAllOtherFloors(null);
 
-    // 2) 텍스트 박스 기준으로 스크롤
-    requestAnimationFrame(() => {
-      const inner = target.querySelector('.floor-inner') || target;
-      const rect  = inner.getBoundingClientRect();
-      const offset = window.scrollY + rect.top - 40;
+    // 패널 transition 시간을 0.35s로 줄였으니까,
+    // 그보다 살짝 긴 시간만 기다렸다가 스크롤 시작
+    const SCROLL_DELAY = 320; // ms (느리면 320, 빠르면 420 이런 식으로 살짝 조절해도 됨)
+
+    setTimeout(() => {
+      const inner  = target.querySelector('.floor-inner');
+      const baseEl = inner || target;
+
+      const rect   = baseEl.getBoundingClientRect();
+      const offset = window.scrollY + rect.top - 40;  // 위 여백 (40 → 20/60으로 감각대로 조정 가능)
+
       smoothScrollTo(offset);
-    });
+    }, SCROLL_DELAY);
   });
 });
+
+
 
 /* ENTER / EXIT : 층 확장 / 접기 */
 document.querySelectorAll('.floor').forEach(floor => {
@@ -673,8 +703,9 @@ document.querySelectorAll('.floor').forEach(floor => {
 
   if (!enterBtn || !exitBtn || !panel) return;
 
-  // ENTER
+  // ENTER: 영상 영역 펼치기
   enterBtn.addEventListener('click', () => {
+    // ✅ 먼저 다른 층에 열려 있던 영상들 닫기
     closeAllOtherFloors(floor);
 
     const fullHeight = panel.scrollHeight;
@@ -683,19 +714,46 @@ document.querySelectorAll('.floor').forEach(floor => {
     floor.classList.add('open');
     exitBtn.style.display = 'inline-block';
 
+    // 상영관 위치로 스크롤
     const rect = panel.getBoundingClientRect();
     const offset = window.scrollY + rect.top - (window.innerHeight * 0.25);
     smoothScrollTo(offset);
   });
 
-  // EXIT
+  // EXIT: 영상 영역 접기 + Vimeo 정지
   exitBtn.addEventListener('click', () => {
+    // 공통 닫기 함수 사용
     closeFloor(floor);
+
+    // 다시 층 상단으로 스크롤
     const offset = floor.offsetTop;
     smoothScrollTo(offset);
   });
 });
+
 </script>
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
