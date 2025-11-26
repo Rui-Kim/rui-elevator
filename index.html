@@ -234,8 +234,8 @@ main {
 .line-vertical {
   position: fixed;
   top: 0;
-  left: 50vw;                   /* 화면 중앙 */
-  height: 100vh;
+  left: 32vw;               /* 🔥 화면 정중앙(50vw) → 왼쪽으로 이동 */
+  height: 100vh;            /* 🔥 이 값은 JS에서 층마다 바꿀 거야 */
   width: 1px;
   background: rgba(255,255,255,0.22);
   z-index: 0;
@@ -245,13 +245,13 @@ main {
 .line-horizontal {
   position: fixed;
   top: 50vh;                   
-  left: 50vw;                   
-  width: 200vw;                 
+  left: 32vw;                 /* 🔥 수직선(left)과 같은 값 */
+  width: 200vw;               /* 화면 밖까지 나가도록 */
   height: 1px;
   background: rgba(255,255,255,0.18);
   z-index: 0;
 
-  transform-origin: 0 50%;      /* 왼쪽(세로선 만나는 지점)을 기준으로 회전 */
+  transform-origin: 0 50%;    /* 🔥 왼쪽(수직선 만나는 점)을 기준으로 회전 */
   transform: rotate(0deg);
   transition: all 0.8s ease;
 }
@@ -410,23 +410,26 @@ const h2 = document.getElementById("hline2");
 /* 층별로 소실점(y) + 각도 세팅 (3점 투시 느낌) */
 function setPerspective(yVh, angleDeg) {
   const y = `${yVh}vh`;
+  const x = '32vw';                // 🔥 세로선 x 위치 (CSS와 동일한 값)
 
-  // 세로선은 화면 가운데
-  vline.style.left = '50vw';
+  // 세로선 위치 + 높이 = 소실점까지
+  vline.style.left = x;
+  vline.style.height = y;          // 🔥 교차점에서 딱 끊기도록
 
-  // 두 가로선(대각선)의 시작점 = 세로선과 만나는 지점
+  // 두 대각선의 시작점 = 세로선과 만나는 지점
   [h1, h2].forEach(line => {
-    line.style.left = '50vw';
+    line.style.left = x;
     line.style.top  = y;
     line.style.width = '200vw';
     line.style.transformOrigin = '0 50%'; // 세로선 접점 기준 회전
   });
 
-  h1.style.transform = `rotate(${-angleDeg}deg)`; // 왼쪽
-  h2.style.transform = `rotate(${angleDeg}deg)`;  // 오른쪽
+  // 🔥 양쪽으로 크게 벌어지는 각도
+  h1.style.transform = `rotate(${-angleDeg}deg)`; // 왼쪽으로 기울기
+  h2.style.transform = `rotate(${angleDeg}deg)`;  // 오른쪽으로 기울기
 }
 
-/* 현재 층에 따라 엘리베이터 버튼 active */
+  /* 현재 층에 따라 엘리베이터 버튼 active */
 function updateElevatorActive(sectionId) {
   document.querySelectorAll('.elevator button').forEach(btn => {
     if (btn.dataset.target === `#${sectionId}`) {
@@ -452,26 +455,27 @@ function updateLines() {
   updateElevatorActive(section.id);
 
   /* 층별 소실점/각도만 바꿔줌 */
-  switch(section.id) {
-    case "floor-0":
-      setPerspective(40, 12);
-      break;
-    case "floor--1":
-      setPerspective(55, 18);
-      break;
-    case "floor--2":
-      setPerspective(50, 22);
-      break;
-    case "floor--3":
-      setPerspective(60, 16);
-      break;
-    case "floor--4":
-      setPerspective(45, 20);
-      break;
-    case "floor--5":
-      setPerspective(65, 18);
-      break;
-  }
+ switch(section.id) {
+  case "floor-0":
+    setPerspective(40, 18);   // y=40vh, 각도 18도
+    break;
+  case "floor--1":
+    setPerspective(55, 24);   // 🔥 각도 크게
+    break;
+  case "floor--2":
+    setPerspective(50, 26);
+    break;
+  case "floor--3":
+    setPerspective(60, 22);
+    break;
+  case "floor--4":
+    setPerspective(45, 28);
+    break;
+  case "floor--5":
+    setPerspective(65, 24);
+    break;
+}
+
 }
 
 window.addEventListener('scroll', updateLines);
@@ -529,3 +533,4 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
+
