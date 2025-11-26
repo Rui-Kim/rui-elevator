@@ -576,18 +576,20 @@ document.querySelectorAll('.elevator button').forEach(btn => {
     // 1) 현재 열려 있는 모든 층(영상) 닫기 + 정지
     closeAllOtherFloors(null);
 
-    // 2) 레이아웃 정리된 다음, "텍스트 박스" 기준으로 스크롤
-    requestAnimationFrame(() => {
-      const inner = target.querySelector('.floor-inner'); // 층 제목/텍스트 들어있는 박스
-      const baseEl = inner || target;                     // 혹시 없으면 섹션 자체를 기준으로
+    // 2) 패널 접히는 애니메이션(0.8s) 끝난 뒤에 스크롤
+    //    → max-height transition 이 0.8s 이니까 약간 넉넉하게 850ms
+    setTimeout(() => {
+      const inner  = target.querySelector('.floor-inner'); // 텍스트 박스
+      const baseEl = inner || target;
 
       const rect   = baseEl.getBoundingClientRect();
-      const offset = window.scrollY + rect.top - 40;      // 🔥 여기 40이 '위 여백' (조절 가능)
+      const offset = window.scrollY + rect.top - 40;  // 🔧 위 여백, 필요하면 숫자 조절
 
       smoothScrollTo(offset);
-    });
+    }, 850);
   });
 });
+
 
 
 /* ENTER / EXIT : 층 확장 / 접기 */
@@ -630,6 +632,7 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
+
 
 
 
