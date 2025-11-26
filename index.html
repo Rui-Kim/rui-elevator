@@ -91,7 +91,7 @@ main {
   z-index: 3;
   max-width: 760px;
 
-  margin-bottom: 80px;   /* 🔥 텍스트와 썸네일 사이 여백 */
+  margin-bottom: 140px;   /* 텍스트와 썸네일 사이 여백 넉넉하게 */
 }
 
 
@@ -99,7 +99,7 @@ main {
 /* 썸네일 + ENTER (위쪽에 고정) */
 /* ------------------------------ */
 .floor-media {
-  margin: 28vh auto 40px auto;   /* ← 40 → 40px 로 변경 */
+  margin: 28vh auto 40px auto;
   width: 70vw;
   max-width: 1100px;
   display: flex;
@@ -109,9 +109,9 @@ main {
   transition: transform 0.6s ease;
 }
 
-/* 영상 펼쳐질 때: 썸네일이 살짝 위로 밀리기만 함 */
+/* 영상 펼쳐질 때: 썸네일이 살짝 위로 */
 .floor.open .floor-media {
-  transform: translateY(-15vh);    /* -40vh → -15vh 로 줄여서 화면 안에 남게 */
+  transform: translateY(-15vh);
 }
 
 /* 썸네일 갤러리 */
@@ -143,7 +143,7 @@ main {
   letter-spacing: 0.08em;
 }
 .enter-btn:hover {
-  background: rgba(255,255,255,0.15); /* 아주 은은한 hover */
+  background: rgba(255,255,255,0.15);
   color: #0A0A0A;
 }
   
@@ -157,7 +157,7 @@ main {
   opacity: 0;
   transform: translateY(30px);
 
-  margin: 80px auto 0 auto;       /* 썸네일 아래 간격 */
+  margin: 80px auto 0 auto;
   width: 80vw;
   max-width: 1200px;
   box-sizing: border-box;
@@ -175,15 +175,15 @@ main {
 
 .floor-video-panel-inner {
   width: 100%;
-  margin: 0 auto 260px auto;   /* 아래 여백 증가 */
+  margin: 0 auto 260px auto;   /* 아래 여백 증가 (다음 층과 분리) */
   position: relative;
-  padding-bottom: 160px; 
+  padding-bottom: 160px;       /* EXIT 버튼 공간 */
 }
 
 /* Vimeo 플레이어 크기 */
 .video-player {
   width: 100%;
-  height: calc(80vw * 0.56);       /* 16:9 */
+  height: calc(80vw * 0.56);   /* 16:9 */
   max-height: 80vh;
   display: block;
 }
@@ -196,7 +196,7 @@ main {
   bottom: -80px;
 
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.25); /* ← ENTER와 통일되게 낮춤 */
+  border: 1px solid rgba(255,255,255,0.25);
   color: #DDE1E5;
   font-size: 10px;
   padding: 4px 12px;
@@ -207,7 +207,7 @@ main {
 }
 
 .exit-btn:hover {
-  background: rgba(255,255,255,0.08); /* ← ENTER hover와 동일한 정도 */
+  background: rgba(255,255,255,0.08);
   color: #DDE1E5;
 }
 
@@ -234,21 +234,26 @@ main {
 .line-vertical {
   position: fixed;
   top: 0;
+  left: 50vw;                   /* 화면 중앙 */
   height: 100vh;
   width: 1px;
   background: rgba(255,255,255,0.22);
   z-index: 0;
-  transition: all 1s ease;
+  transition: all 0.8s ease;
 }
 
 .line-horizontal {
   position: fixed;
-  left: 0;
-  width: 100%;
+  top: 50vh;                   
+  left: 50vw;                   
+  width: 200vw;                 
   height: 1px;
-  background: rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.18);
   z-index: 0;
-  transition: all 1s ease;
+
+  transform-origin: 0 50%;      /* 왼쪽(세로선 만나는 지점)을 기준으로 회전 */
+  transform: rotate(0deg);
+  transition: all 0.8s ease;
 }
 
 /* ------------------------------ */
@@ -276,7 +281,7 @@ main {
 <!-- 설계도 선 -->
 <div class="line-vertical" id="vline"></div>
 <div class="line-horizontal" id="hline1"></div>
-<div class="line-horizontal" id="hline2" style="top: 70vh;"></div>
+<div class="line-horizontal" id="hline2"></div>
 
 <main>
 
@@ -368,18 +373,17 @@ main {
 </div>
 
 <script>
-/* 수동 부드러운 스크롤 (behavior: 'smooth' 대신 강제 애니메이션) */
+/* 수동 부드러운 스크롤 */
 function smoothScrollTo(targetY) {
   const startY = window.scrollY || window.pageYOffset;
   const distance = targetY - startY;
-  const duration = 600; // ms
+  const duration = 600;
   let startTime = null;
 
   function step(timestamp) {
     if (!startTime) startTime = timestamp;
     const progress = Math.min((timestamp - startTime) / duration, 1);
-    // easeOutQuad
-    const ease = 1 - (1 - progress) * (1 - progress);
+    const ease = 1 - (1 - progress) * (1 - progress); // easeOutQuad
     window.scrollTo(0, startY + distance * ease);
     if (progress < 1) {
       requestAnimationFrame(step);
@@ -402,6 +406,25 @@ function closeLightbox() {
 const vline = document.getElementById("vline");
 const h1 = document.getElementById("hline1");
 const h2 = document.getElementById("hline2");
+
+/* 층별로 소실점(y) + 각도 세팅 (3점 투시 느낌) */
+function setPerspective(yVh, angleDeg) {
+  const y = `${yVh}vh`;
+
+  // 세로선은 화면 가운데
+  vline.style.left = '50vw';
+
+  // 두 가로선(대각선)의 시작점 = 세로선과 만나는 지점
+  [h1, h2].forEach(line => {
+    line.style.left = '50vw';
+    line.style.top  = y;
+    line.style.width = '200vw';
+    line.style.transformOrigin = '0 50%'; // 세로선 접점 기준 회전
+  });
+
+  h1.style.transform = `rotate(${-angleDeg}deg)`; // 왼쪽
+  h2.style.transform = `rotate(${angleDeg}deg)`;  // 오른쪽
+}
 
 /* 현재 층에 따라 엘리베이터 버튼 active */
 function updateElevatorActive(sectionId) {
@@ -428,36 +451,25 @@ function updateLines() {
 
   updateElevatorActive(section.id);
 
+  /* 층별 소실점/각도만 바꿔줌 */
   switch(section.id) {
     case "floor-0":
-      vline.style.left = "900px";
-      h1.style.top = "5vh";
-      h2.style.top = "70vh";
+      setPerspective(40, 12);
       break;
     case "floor--1":
-      vline.style.left = "120px";
-      h1.style.top = "15vh";
-      h2.style.top = "18vh";
+      setPerspective(55, 18);
       break;
     case "floor--2":
-      vline.style.left = "300px";
-      h1.style.top = "22vh";
-      h2.style.top = "50vh";
+      setPerspective(50, 22);
       break;
     case "floor--3":
-      vline.style.left = "480px";
-      h1.style.top = "50vh";
-      h2.style.top = "80vh";
+      setPerspective(60, 16);
       break;
     case "floor--4":
-      vline.style.left = "620px";
-      h1.style.top = "4vh";
-      h2.style.top = "72vh";
+      setPerspective(45, 20);
       break;
     case "floor--5":
-      vline.style.left = "800px";
-      h1.style.top = "70vh";
-      h2.style.top = "73vh";
+      setPerspective(65, 18);
       break;
   }
 }
@@ -474,7 +486,7 @@ document.querySelectorAll('.elevator button').forEach(btn => {
   });
 });
 
-/* ENTER / EXIT : 층 확장 / 접기 */
+/* ENTER / EXIT : 층 확장 / 접기 + Vimeo 정지 */
 document.querySelectorAll('.floor').forEach(floor => {
   const enterBtn = floor.querySelector('[data-enter]');
   const exitBtn  = floor.querySelector('[data-exit]');
@@ -490,38 +502,30 @@ document.querySelectorAll('.floor').forEach(floor => {
     floor.classList.add('open');
     exitBtn.style.display = 'inline-block';
 
-    // 상영관 위치로 스크롤
     const rect = panel.getBoundingClientRect();
     const offset = window.scrollY + rect.top - (window.innerHeight * 0.1);
     smoothScrollTo(offset);
   });
 
-// EXIT: 영상 영역 접기 + Vimeo 정지
-exitBtn.addEventListener('click', () => {
-  // 1) Vimeo 영상 정지
-  const iframe = panel.querySelector('iframe');
-  if (iframe && iframe.contentWindow) {
-    iframe.contentWindow.postMessage(
-      JSON.stringify({ method: 'pause' }),
-      '*'
-    );
-  }
+  // EXIT: 영상 영역 접기 + Vimeo 정지
+  exitBtn.addEventListener('click', () => {
+    const iframe = panel.querySelector('iframe');
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage(
+        JSON.stringify({ method: 'pause' }),
+        '*'
+      );
+    }
 
-  // 2) 패널 접기
-  panel.style.maxHeight = '0px';
-  floor.classList.remove('open');
-  exitBtn.style.display  = 'none';
+    panel.style.maxHeight = '0px';
+    floor.classList.remove('open');
+    exitBtn.style.display  = 'none';
 
-  // 3) 다시 층 상단으로 스크롤
-  const offset = floor.offsetTop;
-  smoothScrollTo(offset);
-});
+    const offset = floor.offsetTop;
+    smoothScrollTo(offset);
+  });
 });
 </script>
 
 </body>
 </html>
-
-
-
-
