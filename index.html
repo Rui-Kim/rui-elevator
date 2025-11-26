@@ -298,7 +298,7 @@ main {
   <div class="floor-inner">
     <h2>다크라이스코프 실험(Dacryscope Lab)</h2>
     <p>단채널 영상. 12분 20초. 2025.ver.</p>
-     <div> </div>
+    <p>&nbsp;</p>
     <p>다크라이스코프(Dacryscope)는 눈물 또는 눈물샘과의 관계를 나타내는</p>
     <p>접두어 'Dacry-'와 보는 기계를 뜻하는 '-scope'를 합성한 단어로</p>
     <p>3D 가상 환경 속에서 시야의 신체성을 복원하기 위해 작가가 개발한 모델의 이름이다.</p>
@@ -337,9 +337,47 @@ main {
 <!-- -2층 -->
 <section class="floor" id="floor--2">
   <div class="floor-inner">
-    <h2><Pyknolepsy(seizures)></h2>
+    <h2>Hall</h2>
+    <p>2채널 영상. 3분 루프. 2024.</p>
+    <p>&nbsp;</p>
+    <p>강렬한 빛을 바라보았을 때 안구 내부에 생기는 혈관의 잔상을 재현하기 위해 3D 모델을 설계하고 촬영한 영상이다.</p>
+    <p>프루킨예 나무현상, 비문증, 안내섬광 등의 내시현상을 연출한다.</p>
+    <p>각막과 망막 사이 시야를 방해하는 증상들이 화면의 빛과 어둠을 결정한다.</p>
+  </div>
+    <!-- 썸네일 + ENTER -->
+  <div class="floor-media">
+    <div class="gallery">
+      <img src="media/1.jpeg" onclick="openLightbox(this.src)" alt="Hall still 1">
+      <img src="media/2 .jpg.jpg" onclick="openLightbox(this.src)" alt="Hall still 2">
+      <img src="media/3 .jpg" onclick="openLightbox(this.src)" alt="Hall still 3">
+      <img src="media/4 .jpg" onclick="openLightbox(this.src)" alt="Hall still 4">
+    </div>
+
+    <button type="button" class="enter-btn" data-enter>ENTER</button>
+  </div>
+
+  <!-- 펼쳐지는 상영관 -->
+  <div class="floor-video-panel">
+    <div class="floor-video-panel-inner">
+      <iframe
+        src="https://player.vimeo.com/video/1085771023?h=5a6b25d638&amp;badge=0&amp;autopause=0&amp;player_id=0"
+        class="video-player"
+        frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+
+      <button type="button" class="exit-btn" data-exit>EXIT</button>
+    </div>
+  </div>
+</section>
+  
+<!-- -3층 -->
+<section class="floor" id="floor--3">
+  <div class="floor-inner">
+    <h2>Pyknolepsy(seizures)</h2>
     <p>단채널 영상. 15분 30초. 2025.</p>
-     <div> </div>
+    <p>&nbsp;</p>
     <p>1인칭의 눈을 통해 한 사람의 과거로 간다.</p>
     <p>영상은 눈의 깜빡임을 따라 간헐적으로 화면을 채우는 시지각의 미세한 결함들을 몽타주로 환원시킨다.</p>
     <p>일상적 풍경과 시야의 균열에서 영화-기계적 아름다움을 발견하고자 한다.</p>
@@ -349,8 +387,8 @@ main {
     <div class="gallery">
       <img src="media/Picnolepsie_1.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 1">
       <img src="media/Picnolepsie_2.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 2">
-      <img src="media/Picnolepsie_5.jpeg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 3">
-      <img src="media/Picnolepsie_4.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 4">
+      <img src="media/Picnolepsie_4.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 3">
+      <img src="media/Picnolepsie_5.jpeg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 4">
       <img src="media/Picnolepsie_3.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 5">
       <img src="media/pyknolepsy_7.jpg" onclick="openLightbox(this.src)" alt="Pyknolepsy still 6">
     </div>
@@ -374,13 +412,7 @@ main {
   </div>
 </section>
 
-<!-- -3층 -->
-<section class="floor" id="floor--3">
-  <div class="floor-inner">
-    <h2>Orfeo / ecco</h2>
-    <p>조명, 카메라, 뒤돌아봄과 잔향의 시퀀스.</p>
-  </div>
-</section>
+
 
 <!-- -4층 -->
 <section class="floor" id="floor--4">
@@ -561,6 +593,7 @@ exitBtn.addEventListener('click', () => {
 
 </body>
 </html>
+
 
 
 
