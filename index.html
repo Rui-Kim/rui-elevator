@@ -573,39 +573,17 @@ document.querySelectorAll('.elevator button').forEach(btn => {
     const target = document.querySelector(btn.dataset.target);
     if (!target) return;
 
-    // 1) 먼저 열려 있는 층들(영상) 싹 접고, 재생 중이면 멈추기
-    document.querySelectorAll('.floor.open').forEach(openFloor => {
-      const panel  = openFloor.querySelector('.floor-video-panel');
-      const exitBtn = openFloor.querySelector('[data-exit]');
-      const iframe = openFloor.querySelector('iframe');
+    // 1) 현재 열려 있는 모든 층(영상) 닫기 + 정지
+    closeAllOtherFloors(null);   // 이미 위쪽에 정의해둔 함수 그대로 사용
 
-      if (panel) {
-        panel.style.maxHeight = '0px';
-      }
-      openFloor.classList.remove('open');
-      if (exitBtn) {
-        exitBtn.style.display = 'none';
-      }
-
-      // Vimeo 정지
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.postMessage(
-          JSON.stringify({ method: 'pause' }),
-          '*'
-        );
-      }
+    // 2) 레이아웃이 정리된 다음, 층의 시작점으로 스크롤
+    requestAnimationFrame(() => {
+      const offset = target.offsetTop + 20;  // ← 여기 숫자만 취향대로 조정
+      smoothScrollTo(offset);
     });
-
-    // 2) 이동할 층의 텍스트 박스를 기준으로 스크롤
-    const inner = target.querySelector('.floor-inner');
-    const rect  = (inner || target).getBoundingClientRect();
-
-    // 화면 상단에서 조금 내려온 지점(60px 정도 여백)
-    const offset = window.scrollY + rect.top - 60;
-
-    smoothScrollTo(offset);
   });
 });
+
 
 
 /* ENTER / EXIT : 층 확장 / 접기 */
@@ -648,6 +626,7 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
+
 
 
 
