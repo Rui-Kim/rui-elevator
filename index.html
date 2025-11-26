@@ -677,21 +677,19 @@ document.querySelectorAll('.elevator button').forEach(btn => {
     // 1) 현재 열려 있는 모든 층(영상) 닫기 + 정지
     closeAllOtherFloors(null);
 
-    // 패널 transition 시간을 0.35s로 줄였으니까,
-    // 그보다 살짝 긴 시간만 기다렸다가 스크롤 시작
-    const SCROLL_DELAY = 320; // ms (느리면 320, 빠르면 420 이런 식으로 살짝 조절해도 됨)
-
-    setTimeout(() => {
+    // 2) 레이아웃이 접힌 상태가 반영된 "다음 프레임"에서 위치 계산
+    requestAnimationFrame(() => {
       const inner  = target.querySelector('.floor-inner');
       const baseEl = inner || target;
 
       const rect   = baseEl.getBoundingClientRect();
-      const offset = window.scrollY + rect.top - 40;  // 위 여백 (40 → 20/60으로 감각대로 조정 가능)
+      const offset = window.scrollY + rect.top - 40;  // 위 여백 (원하면 20~60 사이로만 조절)
 
       smoothScrollTo(offset);
-    }, SCROLL_DELAY);
+    });
   });
 });
+
 
 
 
@@ -735,6 +733,7 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
+
 
 
 
