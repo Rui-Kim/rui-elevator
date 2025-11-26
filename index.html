@@ -577,8 +577,13 @@ document.querySelectorAll('.elevator button').forEach(btn => {
     closeAllOtherFloors(null);   // 이미 위쪽에 정의해둔 함수 그대로 사용
 
     // 2) 레이아웃이 정리된 다음, 층의 시작점으로 스크롤
-    requestAnimationFrame(() => {
-      const offset = target.offsetTop + 20;  // ← 여기 숫자만 취향대로 조정
+ requestAnimationFrame(() => {
+      const inner = target.querySelector('.floor-inner'); // 층 제목/텍스트 들어있는 박스
+      const baseEl = inner || target;                     // 혹시 없으면 섹션 자체를 기준으로
+
+      const rect   = baseEl.getBoundingClientRect();
+      const offset = window.scrollY + rect.top - 30;      // 🔥 여기 40이 '위 여백' (조절 가능)
+
       smoothScrollTo(offset);
     });
   });
@@ -626,6 +631,7 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
+
 
 
 
