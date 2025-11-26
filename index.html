@@ -496,21 +496,32 @@ document.querySelectorAll('.floor').forEach(floor => {
     smoothScrollTo(offset);
   });
 
-  // EXIT: 영상 영역 접기
-  exitBtn.addEventListener('click', () => {
-    panel.style.maxHeight = '0px';
-    floor.classList.remove('open');
-    exitBtn.style.display  = 'none';
+// EXIT: 영상 영역 접기 + Vimeo 정지
+exitBtn.addEventListener('click', () => {
+  // 1) Vimeo 영상 정지
+  const iframe = panel.querySelector('iframe');
+  if (iframe && iframe.contentWindow) {
+    iframe.contentWindow.postMessage(
+      JSON.stringify({ method: 'pause' }),
+      '*'
+    );
+  }
 
-    // 다시 층 상단으로
-    const offset = floor.offsetTop;
-    smoothScrollTo(offset);
-  });
+  // 2) 패널 접기
+  panel.style.maxHeight = '0px';
+  floor.classList.remove('open');
+  exitBtn.style.display  = 'none';
+
+  // 3) 다시 층 상단으로 스크롤
+  const offset = floor.offsetTop;
+  smoothScrollTo(offset);
+});
 });
 </script>
 
 </body>
 </html>
+
 
 
 
