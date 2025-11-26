@@ -578,7 +578,7 @@ document.querySelectorAll('.elevator button').forEach(btn => {
 
     // 패널 transition 시간을 0.35s로 줄였으니까,
     // 그보다 살짝 긴 시간만 기다렸다가 스크롤 시작
-    const SCROLL_DELAY = 380; // ms (느리면 320, 빠르면 420 이런 식으로 살짝 조절해도 됨)
+    const SCROLL_DELAY = 320; // ms (느리면 320, 빠르면 420 이런 식으로 살짝 조절해도 됨)
 
     setTimeout(() => {
       const inner  = target.querySelector('.floor-inner');
@@ -634,6 +634,7 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
+
 
 
 
