@@ -574,10 +574,37 @@ document.querySelectorAll('.elevator button').forEach(btn => {
     const target = document.querySelector(btn.dataset.target);
     if (!target) return;
 
-    // ✅ 다른 층에 열려 있는 영상들 전부 닫기
-    closeAllOtherFloors(null);
+    // 1) 먼저 열려 있는 층들(영상) 싹 접고, 재생 중이면 멈추기
+    document.querySelectorAll('.floor.open').forEach(openFloor => {
+      const panel  = openFloor.querySelector('.floor-video-panel');
+      const exitBtn = openFloor.querySelector('[data-exit]');
+      const iframe = openFloor.querySelector('iframe');
 
-    smoothScrollTo(target.offsetTop);
+      if (panel) {
+        panel.style.maxHeight = '0px';
+      }
+      openFloor.classList.remove('open');
+      if (exitBtn) {
+        exitBtn.style.display = 'none';
+      }
+
+      // Vimeo 정지
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage(
+          JSON.stringify({ method: 'pause' }),
+          '*'
+        );
+      }
+    });
+
+    // 2) 이동할 층의 텍스트 박스를 기준으로 스크롤
+    const inner = target.querySelector('.floor-inner');
+    const rect  = (inner || target).getBoundingClientRect();
+
+    // 화면 상단에서 조금 내려온 지점(60px 정도 여백)
+    const offset = window.scrollY + rect.top - 60;
+
+    smoothScrollTo(offset);
   });
 });
 
@@ -622,6 +649,7 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
+
 
 
 
