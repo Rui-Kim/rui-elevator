@@ -633,20 +633,37 @@ function updateLines() {
   }
 }
 
-  // 🔧 열려 있는 층(영상) 닫는 공통 함수
-function closeFloor(floor) {
+// 🔧 열려 있는 층(영상) 닫는 공통 함수
+//    instant = true 이면 애니메이션 없이 바로 접기 (엘리베이터 이동용)
+function closeFloor(floor, instant = false) {
   if (!floor.classList.contains('open')) return;
 
   const panel   = floor.querySelector('.floor-video-panel');
   const exitBtn = floor.querySelector('[data-exit]');
   const iframe  = floor.querySelector('iframe');
 
-  // 1) 비디오 패널 접기
-  if (panel) panel.style.maxHeight = '0px';
+  if (panel) {
+    if (instant) {
+      // 애니메이션 끄고 바로 max-height = 0
+      const prevTransition = panel.style.transition;
+      panel.style.transition = 'none';
+      panel.style.maxHeight = '0px';
+
+      // 한 번 강제 리플로우해서 스타일 적용
+      panel.offsetHeight;
+
+      // transition 원래대로 복원 (빈 문자열이면 CSS에 정의된 값 사용)
+      panel.style.transition = prevTransition || '';
+    } else {
+      // 평소처럼 애니메이션으로 접기
+      panel.style.maxHeight = '0px';
+    }
+  }
+
   floor.classList.remove('open');
   if (exitBtn) exitBtn.style.display = 'none';
 
-  // 2) Vimeo 영상 정지
+  // Vimeo 영상 정지
   if (iframe && iframe.contentWindow) {
     iframe.contentWindow.postMessage(
       JSON.stringify({ method: 'pause' }),
@@ -656,13 +673,14 @@ function closeFloor(floor) {
 }
 
 // 🔧 현재 층(floor)을 제외하고 전부 닫기
-function closeAllOtherFloors(currentFloor) {
+function closeAllOtherFloors(currentFloor, instant = false) {
   document.querySelectorAll('.floor').forEach(f => {
     if (!currentFloor || f !== currentFloor) {
-      closeFloor(f);
+      closeFloor(f, instant);
     }
   });
 }
+
 
   
 window.addEventListener('scroll', updateLines);
@@ -674,23 +692,21 @@ document.querySelectorAll('.elevator button').forEach(btn => {
     const target = document.querySelector(btn.dataset.target);
     if (!target) return;
 
-    // 1) 현재 열려 있는 모든 층(영상) 닫기 + 정지
-    closeAllOtherFloors(null);
+    // 1) 현재 열려 있는 모든 층(영상) 닫기 + 정지 (🔥 애니메이션 없이 즉시)
+    closeAllOtherFloors(null, true);
 
-    // 2) 레이아웃이 접힌 상태가 반영된 "다음 프레임"에서 위치 계산
+    // 2) 레이아웃이 접힌 상태가 반영된 다음 프레임에서 위치 계산
     requestAnimationFrame(() => {
       const inner  = target.querySelector('.floor-inner');
       const baseEl = inner || target;
 
       const rect   = baseEl.getBoundingClientRect();
-      const offset = window.scrollY + rect.top - 40;  // 위 여백 (원하면 20~60 사이로만 조절)
+      const offset = window.scrollY + rect.top - 40;  // 위 여백, 20~60 사이로 취향 조절
 
       smoothScrollTo(offset);
     });
   });
 });
-
-
 
 
 /* ENTER / EXIT : 층 확장 / 접기 */
@@ -703,8 +719,8 @@ document.querySelectorAll('.floor').forEach(floor => {
 
   // ENTER: 영상 영역 펼치기
   enterBtn.addEventListener('click', () => {
-    // ✅ 먼저 다른 층에 열려 있던 영상들 닫기
-    closeAllOtherFloors(floor);
+    // ✅ 다른 층은 "일반 애니메이션"으로 접기
+    closeAllOtherFloors(floor, false);
 
     const fullHeight = panel.scrollHeight;
     panel.style.maxHeight = fullHeight + 'px';
@@ -720,19 +736,20 @@ document.querySelectorAll('.floor').forEach(floor => {
 
   // EXIT: 영상 영역 접기 + Vimeo 정지
   exitBtn.addEventListener('click', () => {
-    // 공통 닫기 함수 사용
-    closeFloor(floor);
+    // 공통 닫기 함수 사용 (애니메이션 O)
+    closeFloor(floor, false);
 
-    // 다시 층 상단으로 스크롤
     const offset = floor.offsetTop;
     smoothScrollTo(offset);
   });
 });
 
+  
 </script>
 
 </body>
 </html>
+
 
 
 
