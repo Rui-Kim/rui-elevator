@@ -582,7 +582,7 @@ document.querySelectorAll('.elevator button').forEach(btn => {
       const baseEl = inner || target;                     // 혹시 없으면 섹션 자체를 기준으로
 
       const rect   = baseEl.getBoundingClientRect();
-      const offset = window.scrollY + rect.top - 30;      // 🔥 여기 40이 '위 여백' (조절 가능)
+      const offset = window.scrollY + rect.top - 60;      // 🔥 여기 60이 '위 여백' (조절 가능)
 
       smoothScrollTo(offset);
     });
@@ -631,6 +631,7 @@ document.querySelectorAll('.floor').forEach(floor => {
 
 </body>
 </html>
+
 
 
 
